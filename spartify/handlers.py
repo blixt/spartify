@@ -12,8 +12,7 @@ class MainPage(RequestHandler):
 def validate(f):
     def wrap(self, party_id, *args, **kwargs):
         if party.exists(party_id):
-            return f(self, party_id, *args, **kwargs)
-        return 'Fail'
+            return f(self, party_id.upper(), *args, **kwargs)
     return wrap
 
 
