@@ -1,3 +1,49 @@
-#spartify {
+@import url(http://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister);
+@import url(http://fonts.googleapis.com/css?family=Rancho);
+
+body {
+	color: #222;
+	font-family: 'Rancho', sans-serif;
+}
+
+button {
+	background: #77f;
+	border: 0;
+	border-radius: 4px;
+	color: #fff;
+	cursor: pointer;
+	font-family: 'Rancho';
+	font-size: 40px;
+	padding: 4px;
+	position: relative;
+	text-shadow: rgba(0, 0, 0, .3) 2px 2px 0;
+	transition: box-shadow 150ms;
+	-moz-transition: box-shadow 150ms;
+	-webkit-transition: box-shadow 150ms;
+	width: 270px;
+}
+
+button:hover {
+	box-shadow: #77f 0 0 50px;
+	z-index: 1;
+}
+
+button.create {
+	background: #6c1;
+}
+
+button.create:hover {
+	box-shadow: #6c1 0 0 50px;
+}
+
+h1 {
+	font-family: 'Love Ya Like A Sister';
+	font-size: 75px;
+	font-weight: normal;
+	margin: 0;
+	text-shadow: #aaa 0 0 5px;
+}
+
+#intro {
 	text-align: center;
 }
