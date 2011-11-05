@@ -1,16 +1,9 @@
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import template
+from google.appengine.ext.webapp import WSGIApplication
 from google.appengine.ext.webapp.util import run_wsgi_app
+from spartify import uris
 
-class MainPage(webapp.RequestHandler):
-    def get(self):
-        self.response.out.write(
-            template.render('templates/index.html', dict()))
 
-application = webapp.WSGIApplication([
-    ('/', MainPage),
-    ], debug=True)
-
+application = WSGIApplication(uris, debug=True)
 
 if __name__ == "__main__":
     run_wsgi_app(application)
