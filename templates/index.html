@@ -3,13 +3,34 @@
 <head>
 <title>This... is... SPARTIFY!</title>
 <link href="/static/spartify.css" rel="stylesheet">
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-26827170-1']);
+  _gaq.push(['_setDomainName', 'spartify.com']);
+  _gaq.push(['_setAllowLinker', true]);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 </head>
 <body>
 <section id="intro">
 	<img src="/static/spartify.png">
 	<h1>Spartify</h1>
+	<p id="info">Create a party to let people suggest songs to play in <a href="http://www.spotify.com/">Spotify</a>, and vote on what should play next. No more huddling in front of one computer or messing up the play queue!
+</section>
+<section id="actions">
 	<p><button class="create">Start a party!</button>
 	<p><button>Join a party</button>
 </section>
+<section id="derp">
+	<p>By <a href="http://twitter.com/andreas_blixt">Andreas Blixt</a> and <a href="http://twitter.com/ricardovice">Ricardo Santos</a> for the <a href="http://boston.musichackday.org/2011/">Boston Music Hack Day '11</a>
+</section>
+<script src="/static/jquery-1.7.min.js"></script>
+<script src="/static/spartify.js"></script>
 </body>
 </html>
