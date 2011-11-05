@@ -26,13 +26,13 @@ button {
 	font-family: 'Rancho';
 	font-size: 40px;
 	outline: 0;
-	padding: 4px;
+	padding: 5px;
 	position: relative;
 	text-shadow: rgba(0, 0, 0, .3) 2px 2px 0;
 	transition: box-shadow 150ms;
 	-moz-transition: box-shadow 150ms;
 	-webkit-transition: box-shadow 150ms;
-	width: 270px;
+	width: 300px;
 }
 
 button:focus, button:hover {
@@ -63,6 +63,11 @@ section {
 }
 
 #derp {
-	font-size: 14px;
-	margin: 50px auto 30px;
+	font-size: 12px;
+	margin: 30px auto;
+	white-space: nowrap;
+}
+
+#info {
+	margin: 5px 0 0;
 }
