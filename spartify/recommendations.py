@@ -1,5 +1,5 @@
 import config
-import json
+from django.utils import simplejson as json
 from urllib import quote_plus as quote
 from google.appengine.api.urlfetch import fetch
 from spartify.track import Track

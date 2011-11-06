@@ -31,7 +31,7 @@ class API(object):
 
     @validate
     def pop(self, party_id):
-        return party.Party(party_id).pop()
+        return party.Party(party_id).pop_track()
 
     @validate
     def vote(self, party_id, user_id, track_uri):
