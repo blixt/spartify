@@ -13,8 +13,8 @@ var spartify = function () {
 		console.log('MockApi: joinParty', partyCode);
 		setTimeout(function () {
 			cb({user_id: 'USERID123', songs: [
-				{album: 'Test Album', artist: 'Test Artist', title: 'Title #1', uri: 'abc'},
-				{album: 'Test Album', artist: 'Test Artist', title: 'Title #2', uri: 'def'}
+				{album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title #1', uri: 'abc'},
+				{album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title #2', uri: 'def'}
 			]});
 		}, 300);
 	};
@@ -51,7 +51,7 @@ var spartify = function () {
 					break;
 				}
 			}
-			if (add) t.mock_songs_.push({album: 'Test Album', artist: 'Test Artist', title: 'Title', uri: uri});
+			if (add) t.mock_songs_.push({album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title', uri: uri});
 
 			cb();
 		}, 300);
@@ -136,15 +136,14 @@ var spartify = function () {
 		}
 	}
 
-	var container = $('#songs');
-	function songsCallback(songs) {
-		container.css('height', songs.length * 50);
+	function fillSongList(list, songs) {
+		list.css('height', songs.length * 50);
 
-		var lis = container.children('li'), traversed = [];
+		var lis = list.children('li'), traversed = [];
 		lis.removeClass('first last');
 		for (var i = 0; i < songs.length; i++) {
 			var song = songs[i],
-				li = container.children('li[data-uri="' + song.uri + '"]');
+				li = list.children('li[data-uri="' + song.uri + '"]');
 
 			if (!song || !song.uri) {
 				console.error('Broken song', song, songs);
@@ -154,9 +153,9 @@ var spartify = function () {
 			if (!li.length) {
 				li = $('<li>')
 					.attr('data-uri', song.uri)
-					.text(song.title + ' by ' + song.artist)
+					.html(song.title + '<br>' + song.artist)
 					.append('<button>+1</button>')
-					.appendTo(container);
+					.appendTo(list);
 			} else {
 				traversed.push(li[0]);
 			}
@@ -167,6 +166,11 @@ var spartify = function () {
 			li.css('top', i * 50);
 		}
 		lis.not(traversed).remove();
+	}
+
+	var container = $('#queue');
+	function songsCallback(songs) {
+		fillSongList(container, songs);
 
 		clearTimeout(timeout);
 		timeout = setTimeout(getSongs, 1000);
@@ -218,15 +222,58 @@ var spartify = function () {
 	});
 
 	// Party page
-	$('#add-song').click(function () {
-		vote($('#search').val());
-	});
-
-	$('#songs button').live('click', function () {
+	$('.song-list button').live('click', function () {
+		console.log('CLICK');
 		var uri = $(this).closest('li').data('uri');
 		vote(uri);
 	});
 
+	(function () {
+		var query = '',
+			counter = 0,
+			field = $('#search'),
+			results = $('#results'),
+			timeout;
+
+		function search() {
+			counter++;
+			$.getJSON('http://ws.spotify.com/search/1/track.json',
+				{q: query},
+				function (data) {
+					var songs = [];
+					for (var i = 0; i < data.tracks.length; i++) {
+						if (i >= 5) break;
+
+						var song = data.tracks[i];
+						songs.push({
+							album: song.album.name,
+							artist: song.artists[0].name,
+							length: song.length,
+							title: song.name,
+							uri: song.href
+						});
+					}
+					fillSongList(results, songs);
+				});
+		}
+
+		function handler() {
+			if (field.val() == query) return;
+			query = field.val();
+
+			clearTimeout(timeout);
+			if (query) {
+				timeout = setTimeout(search, 50);
+			} else {
+				results.empty();
+				results.css('height', 0);
+			}
+		}
+
+		field.on('change keydown keypress keyup', handler);
+	})();
+
+	// XXX: Remove this
 	$('#temp-pop').click(function(){spartify.api.pop(state.partyCode, function(){});});
 
 	// Generic
@@ -248,7 +295,7 @@ var spartify = function () {
 			break;
 	}
 
-	$(window).bind('popstate', function (e) {
+	$(window).on('popstate', function (e) {
 		var state = e.originalEvent.state;
 		if (!state) return;
 

@@ -76,6 +76,59 @@ section {
 	width: 375px;
 }
 
+.song-list {
+	box-shadow: #ddd 0 0 3px;
+	display: block;
+	height: 0;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	transition: height 200ms;
+	-moz-transition: height 200ms;
+	-webkit-transition: height 200ms;
+	width: 100%;
+}
+
+.song-list button {
+	box-shadow: rgba(0, 0, 0, .3) 0 3px 3px inset;
+	font-size: 16px;
+	padding: 5px 10px;
+	position: absolute;
+	right: 8px;
+	top: 8px;
+}
+
+.song-list li {
+	background: #fff;
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 0 0 1px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	display: block;
+	height: 50px;
+	padding: 5px;
+	position: absolute;
+	text-align: left;
+	transition: top 500ms;
+	-moz-transition: top 500ms;
+	-webkit-transition: top 500ms;
+	width: 375px;
+}
+
+.song-list .first {
+	border-top-width: 1px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.song-list .last {
+	border-bottom-width: 1px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
 #derp {
 	font-size: 12px;
 	margin: 30px auto;
@@ -95,67 +148,20 @@ section {
 	display: block;
 }
 
-#search {
+input {
 	border: #ccc solid 1px;
 	border-radius: 3px;
 	box-shadow: #ddd 0 0 5px inset;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	font-family: 'Rancho', sans-serif;
 	font-size: 40px;
+	outline: 0;
 	padding: 3px 5px;
 	width: 375px;
 }
 
-#songs {
-	box-shadow: #ddd 0 0 3px;
-	display: block;
-	height: 0;
-	margin: 0;
-	padding: 0;
-	position: relative;
-	transition: height 200ms;
-	-moz-transition: height 200ms;
-	-webkit-transition: height 200ms;
-	width: 100%;
-}
-
-#songs button {
-	box-shadow: rgba(0, 0, 0, .3) 0 3px 3px inset;
-	font-size: 16px;
-	padding: 5px 10px;
-	position: absolute;
-	right: 8px;
-	top: 8px;
-}
-
-#songs li {
-	background: #fff;
-	border-color: #ccc;
-	border-style: solid;
-	border-width: 0 0 1px;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	display: block;
-	height: 50px;
-	padding: 5px;
-	position: absolute;
-	text-align: left;
-	transition: top 500ms;
-	-moz-transition: top 500ms;
-	-webkit-transition: top 500ms;
-	width: 375px;
-}
-
-#songs .first {
-	border-top-width: 1px;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-#songs .last {
-	border-bottom-width: 1px;
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
+input:focus {
+	border-color: #6c1;
 }

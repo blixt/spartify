@@ -29,17 +29,16 @@
 	<p><button class="nav create" id="start">Start a party!</button>
 </section>
 <section class="p-join" id="party-joiner">
-	<p>Enter the party code below.
+	<p><input id="join-party-code" placeholder="Enter party code here">
 	<p><button class="nav create" id="join">Join!</button>
 	<p><button class="nav go-to-main">Go back</button>
 </section>
 <section class="p-party" id="party-room">
 	<p id="party-code">Party code goes here
 	<p><input id="search" placeholder="Search for songs">
-	<p><button class="nav create" id="add-song">Queue a song</button>
-	<p><button class="nav cancel" id="temp-pop">Pop!!1</button>
-	<ul id="songs">
-	</ul>
+	<ul class="song-list" id="results"></ul>
+	<h2>Queue</h2>
+	<ul class="song-list" id="queue"></ul>
 	<p><button class="nav cancel go-to-main">Leave party :(</button>
 </section>
 <section id="derp">
