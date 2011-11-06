@@ -109,7 +109,7 @@ var spartify = function () {
 
 // Interface code.
 (function () {
-	var state = {};
+	var timeout, state = {};
 
 	function go(page) {
 		$('body').attr('id', 'p-' + page);
@@ -122,7 +122,7 @@ var spartify = function () {
 		}
 	}
 
-	var timeout, container = $('#songs');
+	var container = $('#songs');
 	function songsCallback(songs) {
 		container.css('height', songs.length * 50);
 
@@ -139,7 +139,7 @@ var spartify = function () {
 			if (!li.length) {
 				li = $('<li>')
 					.attr('data-uri', song.uri)
-					.text(song.uri)
+					.text(song.title + ' by ' + song.artist + ' (' + song.uri + ')')
 					.append('<button>+1</button>')
 					.appendTo(container);
 			} else {
@@ -170,7 +170,7 @@ var spartify = function () {
 			userId: userId
 		};
 
-		$('#party-code').html('Party code is: <strong>' + code + '</strong>');
+		$('#party-code').html('Party code is: <code>' + code + '</code>');
 		go('party');
 
 		getSongs();

@@ -1,15 +1,16 @@
 @import url(http://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister);
-@import url(http://fonts.googleapis.com/css?family=Petrona);
 @import url(http://fonts.googleapis.com/css?family=Rancho);
 
 a {
 	color: #474;
+	text-decoration: none;
 }
 
 body {
-	color: #444;
-	font-family: 'Petrona', sans-serif;
-	font-size: 17px;
+	color: #555;
+	font-family: 'Rancho', sans-serif;
+	font-size: 18px;
+	line-height: 1.3;
 	text-align: center;
 }
 
@@ -45,7 +46,6 @@ button.cancel:focus, button.cancel:hover {
 	box-shadow: #c42 0 0 50px;
 }
 
-
 button.create {
 	background: #6c1;
 }
@@ -67,7 +67,7 @@ h1 {
 	font-family: 'Love Ya Like A Sister';
 	font-size: 75px;
 	font-weight: normal;
-	margin: 0;
+	margin: 0 0 10px;
 	text-shadow: #aaa 0 0 5px;
 }
 
