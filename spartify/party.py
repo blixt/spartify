@@ -41,7 +41,7 @@ def exists(party_id):
     return True if key in store else False
 
 def create():
-    party_id = create_id()
+    party_id = create_id(size=5)
     key = 'party:%s' % (party_id,)
     store.timeout_store(key, 1, config.PARTY_JOIN_TIMEOUT)
     return party_id, []

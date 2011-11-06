@@ -49,4 +49,4 @@ class Track:
                 }
 
     def __hash__(self):
-        return self.uri
+        return hash(self.uri)

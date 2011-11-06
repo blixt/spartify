@@ -51,19 +51,20 @@ class Queue(BaseQueue):
     def vote(self, track_uri):
         pos = index_of(self._queue, track_uri, lambda x: x[0].uri)
         if pos is None:
-            new_track = Track(track_uri)
+            track = Track(track_uri)
             # it's ok to lookup now since voting doesn't require prompt action
-            new_track.lookup()
-            self.add(new_track, 1)
+            track.lookup()
+            votes = 0
+            pos = len(self._queue)
         elif pos > 0:
-            track_uri, votes = self._queue.pop(pos)
-            votes+= 1
-            while pos > 1:
-                if votes > self._queue[pos-1][1]:
-                    pos-= 1
-                else:
-                    break
-            self._queue.insert(pos, (track_uri, votes,))
+            track, votes = self._queue.pop(pos)
+        votes+= 1
+        while pos > 1:
+            if votes > self._queue[pos-1][1]:
+                pos-= 1
+            else:
+                break
+        self._queue.insert(pos, (track, votes,))
         self._save()
 
 
