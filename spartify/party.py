@@ -22,13 +22,13 @@ class Party(object):
             for t in find_similar_tracks(self._queue.all):
                 # add simillar track to queue, no votes.
                 self._queue.add(t, 0)
-        return track
+        return dict(track)
 
     def get_queue(self):
-        return [x for x in self._queue.all]
+        return [dict(x) for x in self._queue.all]
 
     def get_played(self):
-        return self._played.all
+        return [dict(t) for t in self._played.all]
 
     def vote(self, user, track_uri):
         user_vote_key = 'vote:%s:%s' % (user, track_uri,)

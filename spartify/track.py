@@ -21,3 +21,11 @@ class Track:
 
     def __str__(self):
         return ','.join((self.uri, self.title, self.artist, self.album,))
+
+    def __dict__(self):
+        return {
+                'uri': self.uri,
+                'title': self.title,
+                'artist': self.artist,
+                'album': self.album,
+                }
