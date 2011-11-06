@@ -43,7 +43,7 @@ var spartify = function () {
 			}
 			if (add) t.mock_songs_.push(uri);
 
-			cb(t.mock_songs_);
+			cb();
 		}, 300);
 	}
 
@@ -84,18 +84,17 @@ var spartify = function () {
 				console.error('Got empty response when joining party');
 				return;
 			}
-			console.log(data);
-			//cb({user_id: });
+			cb({user_id: data.response[0], songs: data.response[1]});
 		});
 	Api.prototype.getSongs = Api.createHandler('queue',
 		['party_id'],
 		function (data, cb) {
-			console.log(data);
+			cb(data.response);
 		});
 	Api.prototype.vote = Api.createHandler('vote',
 		['party_id', 'user_id', 'track_uri'],
 		function (data, cb) {
-			console.log(data);
+			cb();
 		});
 
 
@@ -149,7 +148,7 @@ var spartify = function () {
 
 	function vote(uri) {
 		clearTimeout(timeout);
-		spartify.api.vote(state.partyCode, state.userId, uri, songsCallback);
+		spartify.api.vote(state.partyCode, state.userId, uri, function () {});
 	}
 	
 	function getSongs() {
