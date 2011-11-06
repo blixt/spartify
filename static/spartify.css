@@ -141,6 +141,20 @@ section {
 	width: 375px;
 }
 
+.song-list span {
+	display: block;
+	line-height: 1.2;
+}
+
+.song-list span.title {
+	color: #111;
+	font-size: 20px;
+}
+
+.song-list span.artist {
+	font-size: 15px;
+}
+
 .song-list .first {
 	border-top-width: 1px;
 	border-top-left-radius: 3px;
@@ -170,4 +184,8 @@ section {
 #p-party .p-party
 {
 	display: block;
+}
+
+#queue li:first-child {
+	background: #ffd;
 }

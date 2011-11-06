@@ -153,8 +153,10 @@ var spartify = function () {
 			if (!li.length) {
 				li = $('<li>')
 					.attr('data-uri', song.uri)
-					.html(song.title + '<br>' + song.artist)
-					.append('<button>+1</button>')
+					.append(
+						$('<span>').addClass('title').text(song.title),
+						$('<span>').addClass('artist').text(song.artist),
+						$('<button>+1</button>'))
 					.appendTo(list);
 			} else {
 				traversed.push(li[0]);
