@@ -6,24 +6,20 @@ from google.appengine.api.urlfetch import fetch
 
 class Track:
     uri = None
-    _metadata = {
-            'uri': '',
-            'title': '',
-            'artist': '',
-            'album': '',
-            'length': '',
-            }
+    title = ''
+    artist = ''
+    album = ''
+    length = ''
     _metadata_set = False
 
     def __init__(self, uri):
         self.uri = uri
-        self._metadata['uri'] = self.uri
 
     def set_metadata(self, title, artist, album, length):
-        self._metadata['title'] = title
-        self._metadata['artist'] = artist
-        self._metadata['album'] = album
-        self._metadata['length'] = length
+        self.title = title
+        self.artist = artist
+        self.album = album
+        self.length = length
         self._metadata_set = True
 
     def lookup(self):
@@ -45,7 +41,12 @@ class Track:
                 pass
 
     def to_dict(self):
-        return self._metadata
-
+        return {
+                'uri': self.uri,
+                'title': self.title,
+                'artist': self.artist,
+                'album': self.album,
+                'length': self.length,
+                }
     def __hash__(self):
         return hash(self.uri)
