@@ -14,20 +14,21 @@ class Track:
     def __init__(self, uri):
         self.uri = uri
 
-    def set_metadata(title, artist, album):
+    def set_metadata(self, title, artist, album):
         self.title = title
         self.artist = artist
         self.album = album
         self._meta = True
 
-
     def lookup(self):
+        import logging
         if not self._meta:
             try:
                 url = '%slookup/1/.json?uri=%s' % (config.SPOTIFY_BASE_URL,
                         self.uri)
                 res = fetch(url)
                 res = json.loads(res.content)
+                logging.info(str(res))
                 res_track = res['track']
                 self.set_metadata(
                     res_track['name'],
