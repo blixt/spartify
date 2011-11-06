@@ -71,6 +71,30 @@ h1 {
 	text-shadow: #aaa 0 0 5px;
 }
 
+h2 {
+	font-size: 30px;
+	font-weight: normal;
+	margin: 10px 0;
+}
+
+input {
+	border: #ccc solid 1px;
+	border-radius: 3px;
+	box-shadow: #ddd 0 0 5px inset;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	font-family: 'Rancho', sans-serif;
+	font-size: 40px;
+	outline: 0;
+	padding: 3px 5px;
+	width: 375px;
+}
+
+input:focus {
+	border-color: #6c1;
+}
+
 section {
 	margin: auto;
 	width: 375px;
@@ -146,22 +170,4 @@ section {
 #p-party .p-party
 {
 	display: block;
-}
-
-input {
-	border: #ccc solid 1px;
-	border-radius: 3px;
-	box-shadow: #ddd 0 0 5px inset;
-	box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	font-family: 'Rancho', sans-serif;
-	font-size: 40px;
-	outline: 0;
-	padding: 3px 5px;
-	width: 375px;
-}
-
-input:focus {
-	border-color: #6c1;
 }
