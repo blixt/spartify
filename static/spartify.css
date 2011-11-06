@@ -96,6 +96,7 @@ section {
 }
 
 #songs {
+	box-shadow: #ddd 0 0 3px;
 	display: block;
 	height: 0;
 	margin: 0;
@@ -119,11 +120,27 @@ section {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	display: block;
-	border: #ccc solid 1px;
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 0 0 1px;
 	height: 50px;
+	padding: 5px;
 	position: absolute;
+	text-align: left;
 	transition: top 500ms;
 	-moz-transition: top 500ms;
 	-webkit-transition: top 500ms;
 	width: 375px;
+}
+
+#songs .first {
+	border-top-width: 1px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+#songs .last {
+	border-bottom-width: 1px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
 }

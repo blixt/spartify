@@ -127,6 +127,7 @@ var spartify = function () {
 		container.css('height', songs.length * 50);
 
 		var lis = container.children('li'), traversed = [];
+		lis.removeClass('first last');
 		for (var i = 0; i < songs.length; i++) {
 			var song = songs[i],
 				li = container.children('li[data-uri="' + song.uri + '"]');
@@ -145,6 +146,9 @@ var spartify = function () {
 			} else {
 				traversed.push(li[0]);
 			}
+
+			if (i == 0) li.addClass('first');
+			if (i == songs.length - 1) li.addClass('last');
 
 			li.css('top', i * 50);
 		}
