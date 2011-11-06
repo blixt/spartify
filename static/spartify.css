@@ -103,7 +103,14 @@ section {
 	width: 100%;
 }
 
+#songs button {
+	font-size: 16px;
+	padding: 5px 10px;
+	float: right;
+}
+
 #songs li {
+	background: #fff;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -111,5 +118,8 @@ section {
 	border: #ccc solid 1px;
 	height: 50px;
 	position: absolute;
+	transition: top 500ms;
+	-moz-transition: top 500ms;
+	-webkit-transition: top 500ms;
 	width: 375px;
 }

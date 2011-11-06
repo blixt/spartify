@@ -9,24 +9,40 @@ var spartify = function () {
 			cb('ABCDEFG1234');
 		}, 300);
 	}
-	MockApi.prototype.getSongs = function (party, cb) {
-		console.log('MockApi: getSongs', party);
+	MockApi.prototype.joinParty = function (partyCode, cb) {
+		console.log('MockApi: joinParty', partyCode);
+		setTimeout(function () {
+			cb({user_id: 'USERID123', songs: ['abc', 'def']});
+		}, 300);
+	}
+	MockApi.prototype.getSongs = function (partyCode, cb) {
+		console.log('MockApi: getSongs', partyCode);
 		var t = this;
 		setTimeout(function () {
 			cb(t.mock_songs_);
 		}, 300);
 	}
-	MockApi.prototype.vote = function (partyCode, uri, cb) {
-		console.log('MockApi: vote', partyCode, uri);
+	MockApi.prototype.vote = function (partyCode, userId, uri, cb) {
+		console.log('MockApi: vote', partyCode, userId, uri);
 		var t = this;
 		setTimeout(function () {
+			var i;
 			if (Math.random() < 0.3 && t.mock_songs_.length > 1) {
-				var i = Math.floor(Math.random() * (t.mock_songs_.length - 1));
+				i = Math.floor(Math.random() * (t.mock_songs_.length - 1));
 				var song = t.mock_songs_[i];
 				t.mock_songs_[i] = t.mock_songs_[i + 1];
 				t.mock_songs_[i + 1] = song;
 			}
-			t.mock_songs_.push(uri);
+
+			var add = true;
+			for (i = 0; i < t.mock_songs_.length; i++) {
+				if (t.mock_songs_[i] == uri) {
+					add = false;
+					break;
+				}
+			}
+			if (add) t.mock_songs_.push(uri);
+
 			cb(t.mock_songs_);
 		}, 300);
 	}
@@ -35,19 +51,63 @@ var spartify = function () {
 	// The real API.
 	function Api() {
 	}
-	Api.prototype.getSongs = function (party, cb) {
-		$.getJSON('/api/get_songs', {party: '"' + party + '"'}, cb);
+	Api.createHandler = function (method, argNames, callback) {
+		return function () {
+			if (arguments.length - 1 != argNames.length) {
+				console.error('Wrong number of arguments. Excepted: ' + argNames.join(', ') + ', callback');
+				return;
+			}
+
+			var args = {};
+			for (var i = 0; i < argNames.length; i++) {
+				args[argNames[i]] = JSON.stringify(arguments[i]);
+			}
+			var cb = arguments[i];
+
+			$.getJSON('/api/' + method, args, function (data) {
+				if (data.status != 'success') {
+					console.error('API call', method, args, 'failed:', data);
+				}
+				callback(data, cb);
+			});
+		};
 	}
+	Api.prototype.createParty = Api.createHandler('start',
+		[],
+		function (data, cb) {
+			cb(data.response[0]);
+		});
+	Api.prototype.joinParty = Api.createHandler('join',
+		['party_id'],
+		function (data, cb) {
+			if (!data.response) {
+				console.error('Got empty response when joining party');
+				return;
+			}
+			console.log(data);
+			//cb({user_id: });
+		});
+	Api.prototype.getSongs = Api.createHandler('queue',
+		['party_id'],
+		function (data, cb) {
+			console.log(data);
+		});
+	Api.prototype.vote = Api.createHandler('vote',
+		['party_id', 'user_id', 'track_uri'],
+		function (data, cb) {
+			console.log(data);
+		});
 
 
 	return {
-		api: new MockApi()
+		//api: new MockApi()
+		api: new Api()
 	};
 }();
 
 // Interface code.
 (function () {
-	var partyCode = null;
+	var state = {};
 
 	function go(page) {
 		$('body').attr('id', 'p-' + page);
@@ -56,13 +116,13 @@ var spartify = function () {
 
 		if (page != 'party') {
 			clearTimeout(timeout);
-			partyCode = null;
+			state = {};
 		}
 	}
 
 	var timeout, container = $('#songs');
 	function songsCallback(songs) {
-		container.css('height', songs.length * 40);
+		container.css('height', songs.length * 50);
 
 		var lis = container.children('li'), traversed = [];
 		for (var i = 0; i < songs.length; i++) {
@@ -79,32 +139,41 @@ var spartify = function () {
 				traversed.push(li[0]);
 			}
 
-			li.css('top', i * 40);
+			li.css('top', i * 50);
 		}
 		lis.not(traversed).remove();
 
+		clearTimeout(timeout);
 		timeout = setTimeout(getSongs, 1000);
 	}
 
 	function vote(uri) {
-		if (!partyCode) alert('vote without party?');
 		clearTimeout(timeout);
-		spartify.api.vote(partyCode, uri, songsCallback);
+		spartify.api.vote(state.partyCode, state.userId, uri, songsCallback);
 	}
 	
 	function getSongs() {
-		if (!partyCode) return;
-		spartify.api.getSongs(partyCode, songsCallback);
+		if (!state.partyCode) return;
+		spartify.api.getSongs(state.partyCode, songsCallback);
 	}
 
-	function enterParty(code) {
-		clearTimeout(timeout);
+	function enterParty(code, userId) {
+		state = {
+			partyCode: code,
+			userId: userId
+		};
 
-		partyCode = code;
 		$('#party-code').html('Party code is: <strong>' + code + '</strong>');
 		go('party');
 
 		getSongs();
+	}
+
+	function joinParty(code) {
+		spartify.api.joinParty(code, function (data) {
+			enterParty(code, data['user_id']);
+			songsCallback(data['songs']);
+		});
 	}
 
 
@@ -114,7 +183,7 @@ var spartify = function () {
 		$('#party-code').text('...');
 		spartify.api.createParty(function (code) {
 			history.pushState({page: 'party', partyCode: code}, null, '/' + code);
-			enterParty(code);
+			enterParty(code, true);
 		});
 	});
 
@@ -148,7 +217,7 @@ var spartify = function () {
 			go('join');
 			break;
 		default:
-			enterParty(location.pathname.substring(1));
+			joinParty(location.pathname.substring(1));
 			break;
 	}
 
@@ -165,7 +234,7 @@ var spartify = function () {
 				break;
 			case 'party':
 				$('button').attr('disabled', true);
-				enterParty(state.partyCode);
+				joinParty(state.partyCode);
 				break;
 		}
 	});
