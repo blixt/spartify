@@ -97,9 +97,13 @@ section {
 
 #songs {
 	display: block;
+	height: 0;
 	margin: 0;
 	padding: 0;
 	position: relative;
+	transition: height 200ms;
+	-moz-transition: height 200ms;
+	-webkit-transition: height 200ms;
 	width: 100%;
 }
 

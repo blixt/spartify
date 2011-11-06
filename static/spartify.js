@@ -12,7 +12,10 @@ var spartify = function () {
 	MockApi.prototype.joinParty = function (partyCode, cb) {
 		console.log('MockApi: joinParty', partyCode);
 		setTimeout(function () {
-			cb({user_id: 'USERID123', songs: ['abc', 'def']});
+			cb({user_id: 'USERID123', songs: [
+				{album: 'Test Album', artist: 'Test Artist', title: 'Title #1', uri: 'abc'},
+				{album: 'Test Album', artist: 'Test Artist', title: 'Title #2', uri: 'def'}
+			]});
 		}, 300);
 	}
 	MockApi.prototype.getSongs = function (partyCode, cb) {
@@ -41,7 +44,7 @@ var spartify = function () {
 					break;
 				}
 			}
-			if (add) t.mock_songs_.push(uri);
+			if (add) t.mock_songs_.push({album: 'Test Album', artist: 'Test Artist', title: 'Title', uri: uri});
 
 			cb();
 		}, 300);
@@ -99,8 +102,8 @@ var spartify = function () {
 
 
 	return {
-		//api: new MockApi()
-		api: new Api()
+		api: new MockApi()
+		//api: new Api()
 	};
 }();
 
@@ -128,7 +131,7 @@ var spartify = function () {
 			var song = songs[i],
 				li = container.children('li[data-uri="' + song.uri + '"]');
 
-			if (!song) {
+			if (!song || !song.uri) {
 				console.error('Broken song', song, songs);
 				return;
 			}
@@ -152,7 +155,7 @@ var spartify = function () {
 	}
 
 	function vote(uri) {
-		clearTimeout(timeout);
+		if (!uri) return;
 		spartify.api.vote(state.partyCode, state.userId, uri, function () {});
 	}
 	
