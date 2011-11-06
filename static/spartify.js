@@ -125,13 +125,18 @@ var spartify = function () {
 
 		var lis = container.children('li'), traversed = [];
 		for (var i = 0; i < songs.length; i++) {
-			var uri = songs[i],
-				li = container.children('li[data-uri="' + uri + '"]');
+			var song = songs[i],
+				li = container.children('li[data-uri="' + song.uri + '"]');
+
+			if (!song) {
+				console.error('Broken song', song, songs);
+				return;
+			}
 
 			if (!li.length) {
 				li = $('<li>')
-					.attr('data-uri', uri)
-					.text(uri)
+					.attr('data-uri', song.uri)
+					.text(song.uri)
 					.append('<button>+1</button>')
 					.appendTo(container);
 			} else {
