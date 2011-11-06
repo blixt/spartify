@@ -47,3 +47,6 @@ class Track:
                 'artist': self.artist,
                 'album': self.album,
                 }
+
+    def __hash__(self):
+        return self.uri

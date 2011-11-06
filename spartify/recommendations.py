@@ -11,9 +11,9 @@ def find_similar_tracks(tracks):
     url = '%ssong/search?api_key=%s&artist_id=%%s&sort=song_hotttnesss-desc&results=%s'\
             % (config.ECHONEST_BASE_URL, config.ECHONEST_API_KEY,
                     config.ECHONEST_MAX_TRACKS_PER_ARTIST,)
-    for artist in similar_artists:
+    for artist_id in similar_artists:
         try:
-            res = fetch(url % (quote(artist['id']),))
+            res = fetch(url % (quote(artist),))
             res = json.loads(res.content)
             res_track = res['response']['songs']
             # what we will lookup on Spotify
@@ -44,5 +44,5 @@ def find_similar_artists(artists):
         res = fetch(url % (quote(artist),))
         res = json.loads(res.content)
         for res_artist in res['response']['artists']:
-            result.add(res_artist)
+            result.add(res_artist['id'])
     return result
