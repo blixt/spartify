@@ -2,6 +2,7 @@ import config
 
 from spartify.stores import store
 from spartify.util import create_id
+from spartify.recommendations import find_similar_tracks
 from spartify.playback import Queue, Played
 
 
@@ -12,15 +13,19 @@ class Party(object):
         self._played = Played(self.id)
 
     def pop_track(self):
-        track = self._queue.pop()
-        self._played.add(track)
+        track, votes = self._queue.pop()
+        if not track:
+            # queue is empty, should never happen...
+            return None
+        self._played.add(track, votes)
         if len(self._queue) < config.PARTY_QUEUE_PANIC:
-            # TODO look up stuff on EchoNest
-            pass
+            for t in find_similar_tracks(self._queue.all):
+                # add simillar track to queue, no votes.
+                self._queue.add(t, 0)
         return track
 
     def get_queue(self):
-        return self._queue.all
+        return [x for x in self._queue.all]
 
     def get_played(self):
         return self._played.all

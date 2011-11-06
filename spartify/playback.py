@@ -2,6 +2,7 @@ import config
 
 from spartify.stores import store
 from spartify.util import index_of
+from spartify.track import Track
 
 
 class BaseQueue(object):
@@ -25,17 +26,13 @@ class BaseQueue(object):
     def _key(self):
         raise NotImplementedError
         
-    def add(self, track):
-        try:
-            track, votes = self._queue.pop(0)
-            self._save()
-        except IndexError:
-            track = None
-        return track or None
+    def add(self, track, votes=0):
+        self._queue.append((track, votes,))
+        self._save()
 
     @property
     def all(self):
-        return [str(track) for track, votes in self._queue]
+        return (track for track, votes in self._queue)
  
 
 class Queue(BaseQueue):
@@ -48,8 +45,8 @@ class Queue(BaseQueue):
             track, votes = self._queue.pop(0)
             self._save()
         except IndexError:
-            track = None
-        return track or None
+            track, votes = None, None
+        return track, votes
     
     def vote(self, track_uri):
         pos = index_of(self.queue, track_uri, lambda x: x[0].uri)
@@ -57,7 +54,7 @@ class Queue(BaseQueue):
             new_track = Track(track_uri)
             # it's ok to lookup now since voting doesn't require prompt action
             new_track.lookup()
-            self._queue.append((new_track, 1,))
+            self.add(new_track, 1)
         elif pos > 0:
             track_uri, votes = self._queue.pop(pos)
             votes+= 1
@@ -74,26 +71,3 @@ class Played(BaseQueue):
     @property
     def _key(self):
         return 'played:%s' % (self._party_id,) 
-        
-    def add(self, track):
-        self._queue.append(track)
-        self._save()
-
-
-class Track:
-    uri = ''
-    title = ''
-    artist = ''
-    album = ''
-    _meta = False
-
-    def __init__(self, uri):
-        self.uri = uri
-
-    def lookup(self):
-        if not self._meta:
-            # TODO
-            self._meta = True
-
-    def __str__(self):
-        return ','.join((self.uri, self.title, self.artist, self.album,))
