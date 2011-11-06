@@ -1,6 +1,6 @@
 from spartify import handlers
 
 uris = (
-    ('/', handlers.MainPage),
-    ('/api', handlers.API),
-    )
+    ('/api/(.*)', handlers.SpartifyService),
+    ('/.*', handlers.MainPage),
+)

@@ -1,12 +1,7 @@
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp import RequestHandler
-from spartify import party
 
-
-class MainPage(RequestHandler):
-    def get(self):
-        self.response.out.write(
-            template.render('templates/index.html', dict()))
+from spartify import party, util
 
 
 def validate(f):
@@ -16,12 +11,13 @@ def validate(f):
     return wrap
 
 
-class API(RequestHandler):
+class MainPage(RequestHandler):
     def get(self):
-        #response = self.start()
-        response = self.join('ZIJZP4RM4PSK')
-        self.response.out.write(response)
-    
+        self.response.out.write(
+            template.render('templates/index.html', dict()))
+
+
+class API(object):
     def start(self):
         return party.create()
 
@@ -40,3 +36,7 @@ class API(RequestHandler):
     @validate
     def vote(self, party_id, user_id, track_uri):
         return party.Party(party_id).vote(user_id, track_uri)
+
+
+class SpartifyService(API, util.JsonService):
+    pass
