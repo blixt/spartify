@@ -109,9 +109,11 @@ var spartify = function () {
 
 // Interface code.
 (function () {
-	var timeout, state = {};
+	var state = {}, timeout;
 
 	function go(page) {
+		currentPage = page;
+
 		$('body').attr('id', 'p-' + page);
 		$('button').attr('disabled', false);
 		$(window).scrollTop(0);
@@ -220,9 +222,9 @@ var spartify = function () {
 	});
 
 
-	go('main');
 	switch (location.pathname) {
 		case '/':
+			go('main');
 			break;
 		case '/join':
 			go('join');
