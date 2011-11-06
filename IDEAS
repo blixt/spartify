@@ -13,3 +13,7 @@ party) to the user with high danceability.
 == Add songs via Twitter ==
 Grab tweets mentioning the event/to @spartify, use echonest API to figure out
 song and add it to play queue.
+
+== Multiple hosts ==
+Support several hosts so that people can have devices on several rooms or even
+locations playing in sync.
