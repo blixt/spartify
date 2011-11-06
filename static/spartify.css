@@ -95,6 +95,18 @@ section {
 	display: block;
 }
 
+#search {
+	border: #ccc solid 1px;
+	border-radius: 3px;
+	box-shadow: #ddd 0 0 5px inset;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	font-size: 40px;
+	padding: 3px 5px;
+	width: 375px;
+}
+
 #songs {
 	box-shadow: #ddd 0 0 3px;
 	display: block;
@@ -109,20 +121,23 @@ section {
 }
 
 #songs button {
+	box-shadow: rgba(0, 0, 0, .3) 0 3px 3px inset;
 	font-size: 16px;
 	padding: 5px 10px;
-	float: right;
+	position: absolute;
+	right: 8px;
+	top: 8px;
 }
 
 #songs li {
 	background: #fff;
+	border-color: #ccc;
+	border-style: solid;
+	border-width: 0 0 1px;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	display: block;
-	border-color: #ccc;
-	border-style: solid;
-	border-width: 0 0 1px;
 	height: 50px;
 	padding: 5px;
 	position: absolute;

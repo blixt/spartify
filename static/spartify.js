@@ -8,7 +8,7 @@ var spartify = function () {
 		setTimeout(function () {
 			cb('ABCDEFG1234');
 		}, 300);
-	}
+	};
 	MockApi.prototype.joinParty = function (partyCode, cb) {
 		console.log('MockApi: joinParty', partyCode);
 		setTimeout(function () {
@@ -17,14 +17,21 @@ var spartify = function () {
 				{album: 'Test Album', artist: 'Test Artist', title: 'Title #2', uri: 'def'}
 			]});
 		}, 300);
-	}
+	};
 	MockApi.prototype.getSongs = function (partyCode, cb) {
 		console.log('MockApi: getSongs', partyCode);
 		var t = this;
 		setTimeout(function () {
 			cb(t.mock_songs_);
 		}, 300);
-	}
+	};
+	MockApi.prototype.pop = function (partyCode) {
+		console.log('MockApi: pop', partyCode);
+		var t = this;
+		setTimeout(function () {
+			cb(t.mock_songs_.unshift());
+		}, 300);
+	};
 	MockApi.prototype.vote = function (partyCode, userId, uri, cb) {
 		console.log('MockApi: vote', partyCode, userId, uri);
 		var t = this;
@@ -48,7 +55,7 @@ var spartify = function () {
 
 			cb();
 		}, 300);
-	}
+	};
 
 
 	// The real API.
@@ -90,6 +97,11 @@ var spartify = function () {
 			cb({user_id: data.response[0], songs: data.response[1]});
 		});
 	Api.prototype.getSongs = Api.createHandler('queue',
+		['party_id'],
+		function (data, cb) {
+			cb(data.response);
+		});
+	Api.prototype.pop = Api.createHandler('pop',
 		['party_id'],
 		function (data, cb) {
 			cb(data.response);
@@ -142,7 +154,7 @@ var spartify = function () {
 			if (!li.length) {
 				li = $('<li>')
 					.attr('data-uri', song.uri)
-					.text(song.title + ' by ' + song.artist + ' (' + song.uri + ')')
+					.text(song.title + ' by ' + song.artist)
 					.append('<button>+1</button>')
 					.appendTo(container);
 			} else {
@@ -214,6 +226,8 @@ var spartify = function () {
 		var uri = $(this).closest('li').data('uri');
 		vote(uri);
 	});
+
+	$('#temp-pop').click(function(){spartify.api.pop(state.partyCode, function(){});});
 
 	// Generic
 	$('.go-to-main').click(function () {
