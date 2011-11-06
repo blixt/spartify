@@ -3,36 +3,36 @@ var spartify = function () {
 	function MockApi() {
 		this.mock_songs_ = [];
 	}
-	MockApi.prototype.createParty = function (cb) {
+	MockApi.prototype.createParty = function (success, error) {
 		console.log('MockApi: createParty');
 		setTimeout(function () {
-			cb('ABCDEFG1234');
+			success('ABCDEFG1234');
 		}, 300);
 	};
-	MockApi.prototype.joinParty = function (partyCode, cb) {
+	MockApi.prototype.joinParty = function (partyCode, success, error) {
 		console.log('MockApi: joinParty', partyCode);
 		setTimeout(function () {
-			cb({user_id: 'USERID123', songs: [
+			success({user_id: 'USERID123', songs: [
 				{album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title #1', uri: 'abc'},
 				{album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title #2', uri: 'def'}
 			]});
 		}, 300);
 	};
-	MockApi.prototype.getSongs = function (partyCode, cb) {
+	MockApi.prototype.getSongs = function (partyCode, success, error) {
 		console.log('MockApi: getSongs', partyCode);
 		var t = this;
 		setTimeout(function () {
-			cb(t.mock_songs_);
+			success(t.mock_songs_);
 		}, 300);
 	};
-	MockApi.prototype.pop = function (partyCode) {
+	MockApi.prototype.pop = function (partyCode, success, error) {
 		console.log('MockApi: pop', partyCode);
 		var t = this;
 		setTimeout(function () {
-			cb(t.mock_songs_.unshift());
+			success(t.mock_songs_.unshift());
 		}, 300);
 	};
-	MockApi.prototype.vote = function (partyCode, userId, uri, cb) {
+	MockApi.prototype.vote = function (partyCode, userId, uri, success, error) {
 		console.log('MockApi: vote', partyCode, userId, uri);
 		var t = this;
 		setTimeout(function () {
@@ -53,7 +53,7 @@ var spartify = function () {
 			}
 			if (add) t.mock_songs_.push({album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title', uri: uri});
 
-			cb();
+			success();
 		}, 300);
 	};
 
@@ -63,8 +63,8 @@ var spartify = function () {
 	}
 	Api.createHandler = function (method, argNames, callback) {
 		return function () {
-			if (arguments.length - 1 != argNames.length) {
-				console.error('Wrong number of arguments. Excepted: ' + argNames.join(', ') + ', callback');
+			if (arguments.length - 2 != argNames.length) {
+				console.error('Wrong number of arguments. Excepted: ' + argNames.join(', ') + ', onsuccess, onerror');
 				return;
 			}
 
@@ -72,44 +72,48 @@ var spartify = function () {
 			for (var i = 0; i < argNames.length; i++) {
 				args[argNames[i]] = JSON.stringify(arguments[i]);
 			}
-			var cb = arguments[i];
+			var success = arguments[i], error = arguments[i + 1];
 
 			$.getJSON('/api/' + method, args, function (data) {
 				if (data.status != 'success') {
-					console.error('API call', method, args, 'failed:', data);
+					console.error('API call', method, 'failed:', data.response.type, data.response.message);
+					error(data);
+					return;
 				}
-				callback(data, cb);
+				callback(data, success, error);
 			});
 		};
 	}
 	Api.prototype.createParty = Api.createHandler('start',
 		[],
-		function (data, cb) {
-			cb(data.response[0]);
+		function (data, success, error) {
+			success(data.response[0]);
 		});
 	Api.prototype.joinParty = Api.createHandler('join',
 		['party_id'],
-		function (data, cb) {
+		function (data, success, error) {
 			if (!data.response) {
-				console.error('Got empty response when joining party');
+				error('That room doesn\'t exist');
 				return;
 			}
-			cb({user_id: data.response[0], songs: data.response[1]});
+			success({
+				user_id: data.response[0],
+				songs: data.response[1]});
 		});
 	Api.prototype.getSongs = Api.createHandler('queue',
 		['party_id'],
-		function (data, cb) {
-			cb(data.response);
+		function (data, success, error) {
+			success(data.response);
 		});
 	Api.prototype.pop = Api.createHandler('pop',
 		['party_id'],
-		function (data, cb) {
-			cb(data.response);
+		function (data, success, error) {
+			success(data.response);
 		});
 	Api.prototype.vote = Api.createHandler('vote',
 		['party_id', 'user_id', 'track_uri'],
-		function (data, cb) {
-			cb();
+		function (data, success, error) {
+			success();
 		});
 
 
@@ -127,7 +131,7 @@ var spartify = function () {
 		currentPage = page;
 
 		$('body').attr('id', 'p-' + page);
-		$('button').attr('disabled', false);
+		$('button.nav').attr('disabled', false);
 		$(window).scrollTop(0);
 
 		if (page != 'party') {
@@ -200,17 +204,17 @@ var spartify = function () {
 		getSongs();
 	}
 
-	function joinParty(code) {
+	function joinParty(code, onerror) {
 		spartify.api.joinParty(code, function (data) {
 			enterParty(code, data['user_id']);
 			songsCallback(data['songs']);
-		});
+		}, onerror);
 	}
 
 
 	// Main page
 	$('#start').click(function () {
-		$('button').attr('disabled', true);
+		$('button.nav').attr('disabled', true);
 		$('#party-code').text('...');
 		spartify.api.createParty(function (code) {
 			history.pushState({page: 'party', partyCode: code}, null, '/' + code);
@@ -221,6 +225,31 @@ var spartify = function () {
 	$('#go-join').click(function () {
 		go('join');
 		history.pushState({page: 'join'}, null, '/join');
+	});
+
+	// Join party page
+	$('#join-party-code')
+		.on('change keydown keypress keyup', function () {
+			var value = $(this).val();
+			if (value.toUpperCase() != value) {
+				$(this).val(value = value.toUpperCase());
+			}
+			$(this)
+				.removeClass('invalid')
+				.toggleClass('good', value.length == 5)
+				.toggleClass('error', /^.{6,}$|[^A-Z0-9]/.test(value));
+		})
+		.on('animationEnd mozAnimationEnd webkitAnimationEnd', function () {
+			$(this).removeClass('invalid');
+		});
+
+	$('#join').click(function () {
+		$('button.nav').attr('disabled', true);
+		var button = $('#join-party-code');
+		joinParty(button.val(), function () {
+			$('button.nav').attr('disabled', false);
+			button.removeClass('good').addClass('invalid');
+		});
 	});
 
 	// Party page
@@ -318,7 +347,7 @@ var spartify = function () {
 				go('main');
 				break;
 			case 'party':
-				$('button').attr('disabled', true);
+				$('button.nav').attr('disabled', true);
 				joinParty(state.partyCode);
 				break;
 		}

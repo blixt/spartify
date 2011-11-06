@@ -1,5 +1,21 @@
 @import url(http://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister);
+@import url(http://fonts.googleapis.com/css?family=Nova+Mono);
 @import url(http://fonts.googleapis.com/css?family=Rancho);
+
+@keyframes shake {
+	0% { left: -15px; }
+	50% {left: 15px; }
+}
+
+@-moz-keyframes shake {
+	0% { left: -15px; }
+	50% {left: 15px; }
+}
+
+@-webkit-keyframes shake {
+	0% { left: -15px; }
+	50% {left: 15px; }
+}
 
 a {
 	color: #474;
@@ -62,6 +78,11 @@ button[disabled]:focus, button[disabled]:hover {
 	box-shadow: none;
 }
 
+code, pre {
+	color: #111;
+	font-family: 'Nova Mono', monospace;
+}
+
 h1 {
 	color: #000;
 	font-family: 'Love Ya Like A Sister';
@@ -92,7 +113,33 @@ input {
 }
 
 input:focus {
+	border-color: #555;
+}
+
+input.good {
 	border-color: #6c1;
+	color: #6c1;
+}
+
+input.error, input.invalid {
+	border-color: #c42;
+	color: #c42;
+}
+
+input.invalid {
+	animation-name: shake;
+	animation-duration: 100ms;
+	animation-iteration-count: 3;
+	animation-timing-function: ease-in-out;
+	-moz-animation-name: shake;
+	-moz-animation-duration: 200ms;
+	-moz-animation-iteration-count: 3;
+	-moz-animation-timing-function: ease-in-out;
+	-webkit-animation-name: shake;
+	-webkit-animation-duration: 200ms;
+	-webkit-animation-iteration-count: 3;
+	-webkit-animation-timing-function: ease-in-out;
+	position: relative;
 }
 
 section {
@@ -174,6 +221,10 @@ section {
 
 #info {
 	margin: 5px 0 0;
+}
+
+#join-party-code {
+	font-family: 'Nova Mono', monospace;
 }
 
 .p-join, .p-main, .p-party {
