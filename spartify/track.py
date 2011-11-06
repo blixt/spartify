@@ -24,8 +24,9 @@ class Track:
     def lookup(self):
         if not self._meta:
             try:
-                uri = '%slookup/1/.json?uri=%s'
-                res = fetch(spotify_url)
+                url = '%slookup/1/.json?uri=%s' % (config.SPOTIFY_BASE_URL,
+                        self.uri)
+                res = fetch(url)
                 res = json.loads(res.content)
                 res_track = res['track']
                 self.set_metadata(

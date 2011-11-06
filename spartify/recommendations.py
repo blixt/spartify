@@ -8,8 +8,9 @@ from spartify.track import Track
 def find_similar_tracks(tracks):
     result = set()
     similar_artists = find_similar_artists(track.artist for track in tracks)
-    url = '%ssong/search?api_key=%s&artist_id=%%s&sort=song_hotttnesss-desc&results=1'\
-            % (config.ECHONEST_BASE_URL, ECHONEST_API_KEY,)
+    url = '%ssong/search?api_key=%s&artist_id=%%s&sort=song_hotttnesss-desc&results=%s'\
+            % (config.ECHONEST_BASE_URL, config.ECHONEST_API_KEY,
+                    config.ECHONEST_MAX_TRACKS_PER_ARTIST,)
     for artist in similar_artists:
         try:
             res = fetch(url % (quote(artist['id']),))
@@ -36,8 +37,9 @@ def find_similar_tracks(tracks):
 
 def find_similar_artists(artists):
     result = set()
-    url = '%sartist/similar?api_key=%s&name=%%s&results=3'\
-            % (config.ECHONEST_BASE_URL, ECHONEST_API_KEY,)
+    url = '%sartist/similar?api_key=%s&name=%%s&results=%s'\
+            % (config.ECHONEST_BASE_URL, config.ECHONEST_API_KEY,
+                    config.ECHONEST_MAX_SIMILAR_ARTIST,)
     for artist in artists:
         res = fetch(url % (quote(artist),))
         res = json.loads(res.content)
