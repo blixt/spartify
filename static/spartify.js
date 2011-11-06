@@ -235,26 +235,36 @@ var spartify = function () {
 			results = $('#results'),
 			timeout;
 
+		function handleResults(tracks) {
+			var songs = [];
+			for (var i = 0; i < tracks.length; i++) {
+				if (i >= 5) break;
+
+				var song = tracks[i];
+				songs.push({
+					album: song.album.name,
+					artist: song.artists[0].name,
+					length: song.length,
+					title: song.name,
+					uri: song.href
+				});
+			}
+			fillSongList(results, songs);
+		}
+
 		function search() {
 			counter++;
 			$.getJSON('http://ws.spotify.com/search/1/track.json',
 				{q: query},
-				function (data) {
-					var songs = [];
-					for (var i = 0; i < data.tracks.length; i++) {
-						if (i >= 5) break;
-
-						var song = data.tracks[i];
-						songs.push({
-							album: song.album.name,
-							artist: song.artists[0].name,
-							length: song.length,
-							title: song.name,
-							uri: song.href
-						});
-					}
-					fillSongList(results, songs);
-				});
+				(function (i) {
+					return function (data) {
+						if (counter > i) {
+							// Another search is already in progress.
+							return;
+						}
+						handleResults(data.tracks);
+					};
+				})(counter));
 		}
 
 		function handler() {
