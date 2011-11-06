@@ -32,7 +32,7 @@ class Party(object):
 
     def vote(self, user, track_uri):
         user_vote_key = 'vote:%s:%s' % (user, track_uri,)
-        if store[user_vote_key] is None:
+        if user_vote_key not in store:
             self._queue.vote(track_uri)
             store.timeout_store(user_vote_key, 1, config.USER_REPEAT_VOTE_WAIT)
 
