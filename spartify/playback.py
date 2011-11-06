@@ -49,7 +49,7 @@ class Queue(BaseQueue):
         return track, votes
     
     def vote(self, track_uri):
-        pos = index_of(self.queue, track_uri, lambda x: x[0].uri)
+        pos = index_of(self._queue, track_uri, lambda x: x[0].uri)
         if pos is None:
             new_track = Track(track_uri)
             # it's ok to lookup now since voting doesn't require prompt action
