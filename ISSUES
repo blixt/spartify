@@ -3,3 +3,8 @@ Current memcached based solution is suboptimal, and predictably the more people
 participating, the more likely votes or tracks will get lost. In reality, this
 doesn't pose itself as a major issue given the likely low number of participants
 per party.
+
+== Security ==
+Potential issues with access levels, party guests may potentially be considered
+hosts. Currently it's the frontend responsability to make sure this doesn't
+happen, in the future the Backend should.

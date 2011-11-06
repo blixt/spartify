@@ -9,3 +9,7 @@ party starts.
 == EchoNest suggestions ==
 In addition to searching, suggest tracks (seeded with the play history of the
 party) to the user with high danceability.
+
+== Add songs via Twitter ==
+Grab tweets mentioning the event/to @spartify, use echonest API to figure out
+song and add it to play queue.
