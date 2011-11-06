@@ -34,8 +34,8 @@ class API(RequestHandler):
         return party.Party(party_id).get_queue()
 
     @validate
-    def next(self, party_id):
-        return party.Party(party_id).next_track()
+    def pop(self, party_id):
+        return party.Party(party_id).pop()
 
     @validate
     def vote(self, party_id, user_id, track_uri):
