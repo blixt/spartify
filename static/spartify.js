@@ -223,7 +223,6 @@ var spartify = function () {
 
 	// Party page
 	$('.song-list button').live('click', function () {
-		console.log('CLICK');
 		var uri = $(this).closest('li').data('uri');
 		vote(uri);
 	});
