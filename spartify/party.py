@@ -25,7 +25,7 @@ class Party(object):
         return dict(track)
 
     def get_queue(self):
-        return [dict(x) for x in self._queue.all]
+        return [x.to_dict() for x in self._queue.all]
 
     def get_played(self):
         return [dict(t) for t in self._played.all]

@@ -38,7 +38,7 @@ class Track:
     def __str__(self):
         return ','.join((self.uri, self.title, self.artist, self.album,))
 
-    def __dict__(self):
+    def to_dict(self):
         return {
                 'uri': self.uri,
                 'title': self.title,
