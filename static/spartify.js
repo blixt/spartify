@@ -148,11 +148,13 @@ var spartify = function () {
 	}
 
 	function getUserId(code) {
-		return localStorage[(code || getPartyCode()) + ':userId'] || null;
+		if (!code) code = getPartyCode();
+		return localStorage[code + ':userId'] || code;
 	}
 
 	function isMaster(code) {
-		return !!localStorage[(code || getPartyCode()) + ':master'];
+		if (!code) code = getPartyCode();
+		return !!localStorage[code + ':master'];
 	}
 
 	function go(page) {
