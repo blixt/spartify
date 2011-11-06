@@ -102,8 +102,8 @@ var spartify = function () {
 
 
 	return {
-		api: new MockApi()
-		//api: new Api()
+		//api: new MockApi()
+		api: new Api()
 	};
 }();
 
