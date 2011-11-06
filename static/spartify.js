@@ -178,6 +178,19 @@ var spartify = function () {
 	}
 
 	function fillSongList(list, songs) {
+		// XXX(blixt): This should be in backend.
+		var _temp = [];
+		for (var i = 0; i < songs.length; i++) {
+			var skip = false;
+			for (var j = 0; j < _temp.length; j++) {
+				if (_temp[j].uri == songs[i].uri) {
+					skip = true;
+				}
+			}
+			if (!skip) _temp.push(songs[i]);
+		}
+		songs = _temp;
+
 		list.css('height', songs.length * 50);
 
 		var lis = list.children('li'), traversed = [];
