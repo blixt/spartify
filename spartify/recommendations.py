@@ -29,7 +29,8 @@ def find_similar_tracks(tracks):
                 track.set_metadata(
                     res_track['name'],
                     res_track['artists'][0]['name'],
-                    res_track['album']['name'])
+                    res_track['album']['name'],
+                    res_track['length'])
                 result.add(track)
         except:
             pass
