@@ -20,28 +20,46 @@ button {
 	color: #fff;
 	cursor: pointer;
 	font-family: 'Rancho', sans-serif;
-	font-size: 40px;
 	outline: 0;
 	padding: 5px;
 	position: relative;
 	text-shadow: rgba(0, 0, 0, .3) 2px 2px 0;
+}
+
+button.nav {
+	font-size: 40px;
 	transition: box-shadow 150ms;
 	-moz-transition: box-shadow 150ms;
 	-webkit-transition: box-shadow 150ms;
 	width: 300px;
 }
-
-button:focus, button:hover {
+button.nav:focus, button.nav:hover {
 	box-shadow: #77f 0 0 50px;
 	z-index: 1;
 }
 
+button.cancel {
+	background: #c42;
+}
+button.cancel:focus, button.cancel:hover {
+	box-shadow: #c42 0 0 50px;
+}
+
+
 button.create {
 	background: #6c1;
 }
-
 button.create:focus, button.create:hover {
 	box-shadow: #6c1 0 0 50px;
+}
+
+button[disabled] {
+	background: #aaa;
+	color: #444;
+}
+
+button[disabled]:focus, button[disabled]:hover {
+	box-shadow: none;
 }
 
 h1 {
@@ -59,23 +77,22 @@ section {
 }
 
 #derp {
-	font-size: 13px;
+	font-size: 12px;
 	margin: 30px auto;
-	white-space: nowrap;
 }
 
 #info {
 	margin: 5px 0 0;
 }
 
-#p-join .p-main,
-#p-join .p-party,
-#p-main .p-join,
-#p-main .p-party,
-#p-party .p-join,
-#p-party .p-main
-{
+.p-join, .p-main, .p-party {
 	display: none;
+}
+#p-join .p-join,
+#p-main .p-main,
+#p-party .p-party
+{
+	display: block;
 }
 
 #songs {
@@ -87,8 +104,12 @@ section {
 }
 
 #songs li {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
 	display: block;
 	border: #ccc solid 1px;
-	height: 40px;
+	height: 50px;
 	position: absolute;
+	width: 375px;
 }

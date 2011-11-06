@@ -18,28 +18,31 @@
   })();
 </script>
 </head>
-<body id="p-main">
+<body>
 <section id="intro">
 	<img class="p-main" src="/static/spartify.png">
 	<h1>Spartify</h1>
 	<p class="p-main" id="info">Create a party to let people suggest songs to play in <a href="http://www.spotify.com/">Spotify</a>, and vote on what should play next. No more huddling in front of one computer or messing up the play queue!
 </section>
 <section class="p-main" id="actions">
-	<p><button class="create" id="start">Start a party!</button>
-	<p><button id="go-join">Join a party</button>
+	<p><button class="nav" id="go-join">Join a party</button>
+	<p><button class="nav create" id="start">Start a party!</button>
 </section>
 <section class="p-join" id="party-joiner">
 	<p>Enter the party code below.
-	<p><button class="create" id="join">Join!</button>
-	<p><button class="go-to-main">Go back</button>
+	<p><button class="nav create" id="join">Join!</button>
+	<p><button class="nav go-to-main">Go back</button>
 </section>
 <section class="p-party" id="party-room">
 	<p id="party-code">Party code goes here
+	<p><input id="search" placeholder="Start typing to search">
+	<p><button class="nav create" id="add-song">Queue a song</button>
 	<ul id="songs">
 	</ul>
+	<p><button class="nav cancel go-to-main">Leave party :(</button>
 </section>
 <section id="derp">
-	<p>By <a href="http://twitter.com/andreas_blixt" title="@andreas_blixt">Andreas Blixt</a> and <a href="http://twitter.com/ricardovice" title="@ricardovice">Ricardo Santos</a> for the <a href="http://boston.musichackday.org/2011/">Boston Music Hack Day '11.</a>
+	<p>By <a href="http://twitter.com/andreas_blixt" title="@andreas_blixt">Andreas Blixt</a> and <a href="http://twitter.com/ricardovice" title="@ricardovice">Ricardo Santos</a> for the <a href="http://boston.musichackday.org/2011/">Boston Music Hack Day '11</a>.
 	<p>If you want, have a look at the <a href="http://github.com/blixt/spartify">source code</a>.</p>
 </section>
 <script src="/static/jquery-1.7.min.js"></script>
