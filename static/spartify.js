@@ -125,7 +125,7 @@ var spartify = function () {
 
 // Interface code.
 (function () {
-	var partyCode, timeout;
+	var partyCode, timeout, playing, queue;
 
 	function clearState() {
 		partyCode = null;
@@ -209,9 +209,52 @@ var spartify = function () {
 		lis.not(traversed).remove();
 	}
 
+	function play() {
+		if (!queue.length) return;
+
+		var song = queue[0];
+		if (playing == song.uri) return;
+
+		var duration = song.length * 1000 - 50,
+			li = $('#queue li[data-uri="' + song.uri + '"]');
+
+		setTimeout(function () {
+			var ids = [];
+			for (var i = 0; i < queue.length; i++) {
+				ids.push(queue[i].uri.split(':')[2]);
+			}
+			var tracksetUri = 'spotify:trackset:Spartify:' + ids;
+			console.log(tracksetUri);
+			/*$('#open').attr('src', tracksetUri);*/
+		}, duration - 5000);
+
+		li.css('progress', 0);
+		li.animate({progress: 100}, {
+			duration: duration,
+			step: function (now, fx) {
+				var decl = '0, #ffa ' + now + '%, #ffe ' + now + '%';
+				$(fx.elem)
+					.css('background', 'linear-gradient(' + decl + ')')
+					.css('background', '-moz-linear-gradient(' + decl + ')')
+					.css('background', '-webkit-linear-gradient(' + decl + ')');
+			},
+			complete: function () {
+				spartify.api.pop(getPartyCode(),
+					function () {},
+					function () {});
+			}
+		});
+
+		playing = song.uri;
+		$('#open').attr('src', playing);
+	}
+
 	var container = $('#queue');
 	function songsCallback(songs) {
 		fillSongList(container, songs);
+
+		queue = songs;
+		if (isMaster()) play();
 
 		clearTimeout(timeout);
 		timeout = setTimeout(getSongs, 1000);
@@ -242,7 +285,7 @@ var spartify = function () {
 					partyCode: code
 				}, null, '/' + code);
 		}
-console.log(getPartyCode(), getUserId(code), isMaster(code));
+
 		$('#party-code').html('Party code is: <code>' + code + '</code>');
 		go('party');
 
@@ -252,7 +295,10 @@ console.log(getPartyCode(), getUserId(code), isMaster(code));
 	function joinParty(code, onerror, skipPush) {
 		spartify.api.joinParty(code,
 			function (data) {
-				setUserId(code, data['user_id']);
+				// TODO(blixt): We currently throw away a user id here. Improve API so we don't have to do that.
+				if (!getUserId(code)) {
+					setUserId(code, data['user_id']);
+				}
 				enterParty(code, skipPush);
 				songsCallback(data['songs']);
 			},

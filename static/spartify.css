@@ -236,7 +236,3 @@ section {
 {
 	display: block;
 }
-
-#queue li:first-child {
-	background: #ffd;
-}
