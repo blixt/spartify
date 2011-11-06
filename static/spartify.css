@@ -1,19 +1,15 @@
 @import url(http://fonts.googleapis.com/css?family=Love+Ya+Like+A+Sister);
+@import url(http://fonts.googleapis.com/css?family=Petrona);
 @import url(http://fonts.googleapis.com/css?family=Rancho);
 
 a {
-	color: #222;
-	text-decoration: none;
-}
-
-a:hover {
-	text-shadow: #ff0 0 0 5px;
+	color: #474;
 }
 
 body {
-	color: #555;
-	font-family: 'Rancho', sans-serif;
-	font-size: 18px;
+	color: #444;
+	font-family: 'Petrona', sans-serif;
+	font-size: 17px;
 	text-align: center;
 }
 
@@ -23,7 +19,7 @@ button {
 	border-radius: 4px;
 	color: #fff;
 	cursor: pointer;
-	font-family: 'Rancho';
+	font-family: 'Rancho', sans-serif;
 	font-size: 40px;
 	outline: 0;
 	padding: 5px;
@@ -63,11 +59,36 @@ section {
 }
 
 #derp {
-	font-size: 12px;
+	font-size: 13px;
 	margin: 30px auto;
 	white-space: nowrap;
 }
 
 #info {
 	margin: 5px 0 0;
+}
+
+#p-join .p-main,
+#p-join .p-party,
+#p-main .p-join,
+#p-main .p-party,
+#p-party .p-join,
+#p-party .p-main
+{
+	display: none;
+}
+
+#songs {
+	display: block;
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 100%;
+}
+
+#songs li {
+	display: block;
+	border: #ccc solid 1px;
+	height: 40px;
+	position: absolute;
 }
