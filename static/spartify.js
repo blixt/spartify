@@ -273,7 +273,7 @@ var spartify = function () {
 		if (isMaster()) play();
 
 		clearTimeout(timeout);
-		timeout = setTimeout(getSongs, 1000);
+		timeout = setTimeout(getSongs, 5000);
 	}
 
 	function vote(uri) {
