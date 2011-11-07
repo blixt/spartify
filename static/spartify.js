@@ -149,7 +149,7 @@ var spartify = function () {
 
 	function getUserId(code) {
 		if (!code) code = getPartyCode();
-		return localStorage[code + ':userId'] || code;
+		return localStorage[code + ':userId'];
 	}
 
 	function isMaster(code) {
@@ -277,7 +277,7 @@ var spartify = function () {
 
 	function vote(uri) {
 		if (!uri) return;
-		spartify.api.vote(getPartyCode(), getUserId(), uri,
+		spartify.api.vote(getPartyCode(), getUserId() || 'NO_USER_ID', uri,
 			function () {},
 			function () {});
 	}
