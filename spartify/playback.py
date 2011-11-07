@@ -56,7 +56,7 @@ class Queue(BaseQueue):
             track.lookup()
             votes = 0
             pos = len(self._queue)
-        elif pos > 0:
+        else:
             track, votes = self._queue.pop(pos)
         votes+= 1
         while pos > 1:
