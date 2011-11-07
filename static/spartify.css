@@ -152,6 +152,7 @@ section {
 	display: block;
 	height: 0;
 	margin: 0;
+	overflow: hidden;
 	padding: 0;
 	position: relative;
 	transition: height 200ms;

@@ -266,6 +266,7 @@ var spartify = function () {
 
 	var container = $('#queue');
 	function songsCallback(songs) {
+		$('#party-room h2').toggle(songs.length > 0);
 		fillSongList(container, songs);
 
 		queue = songs;
