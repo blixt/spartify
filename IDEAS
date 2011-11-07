@@ -27,3 +27,4 @@ locations playing in sync.
   in the queue
 - Show a history of played tracks
 - Provide a way to export the party music as a playlist
+- Implement Channel API to make UI more responsive
