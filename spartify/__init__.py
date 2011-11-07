@@ -1,6 +1,7 @@
+import webapp2
+
 from spartify import handlers
 
-uris = (
+app = webapp2.WSGIApplication([
     ('/api/(.*)', handlers.SpartifyService),
-    ('/.*', handlers.MainPage),
-)
+])

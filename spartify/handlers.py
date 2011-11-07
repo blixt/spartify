@@ -1,6 +1,3 @@
-from google.appengine.ext.webapp import template
-from google.appengine.ext.webapp import RequestHandler
-
 from spartify import party, util
 
 
@@ -9,12 +6,6 @@ def validate(f):
         if party.exists(party_id):
             return f(self, party_id.upper(), *args, **kwargs)
     return wrap
-
-
-class MainPage(RequestHandler):
-    def get(self):
-        self.response.out.write(
-            template.render('templates/index.html', dict()))
 
 
 class API(object):

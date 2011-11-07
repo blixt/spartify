@@ -1,7 +1,9 @@
-import config
-from django.utils import simplejson as json
+import json
 from urllib import quote_plus as quote
+
 from google.appengine.api.urlfetch import fetch
+
+import config
 
 
 class Track:

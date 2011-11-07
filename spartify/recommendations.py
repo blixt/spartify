@@ -1,9 +1,10 @@
-import config
-from django.utils import simplejson as json
+import json
 from urllib import quote_plus as quote
-from google.appengine.api.urlfetch import fetch
-from spartify.track import Track
 
+from google.appengine.api.urlfetch import fetch
+
+import config
+from spartify.track import Track
 
 def find_similar_tracks(tracks):
     result = set()
@@ -40,8 +41,9 @@ def find_similar_tracks(tracks):
 def find_similar_artists(artists):
     result = set()
     url = '%sartist/similar?api_key=%s&name=%%s&results=%s'\
-            % (config.ECHONEST_BASE_URL, config.ECHONEST_API_KEY,
-                    config.ECHONEST_MAX_SIMILAR_ARTIST,)
+            % (config.ECHONEST_BASE_URL,
+               config.ECHONEST_API_KEY,
+               config.ECHONEST_MAX_SIMILAR_ARTIST,)
     for artist in artists:
         res = fetch(url % (quote(artist),), deadline=60)
         res = json.loads(res.content)

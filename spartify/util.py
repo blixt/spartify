@@ -1,12 +1,12 @@
 from cStringIO import StringIO
 import inspect
+import json
 import logging
 import string
 import random
 import re
 
-from django.utils import simplejson
-from google.appengine.ext import webapp
+import webapp2
 
 
 def create_id(size=12, chars=string.ascii_uppercase + string.digits):
@@ -21,7 +21,7 @@ def index_of(iterable, value, get_attr=lambda x:x):
     return None
 
 
-class JsonService(webapp.RequestHandler):
+class JsonService(webapp2.RequestHandler):
     """Opens up all attributes that don't start with an underscore to HTTP
     requests using JSON to represent data.
 
@@ -41,7 +41,7 @@ class JsonService(webapp.RequestHandler):
                 args = {}
                 for arg in self.request.params:
                     if arg.startswith('_'): continue
-                    args[str(arg)] = simplejson.loads(self.request.params[arg])
+                    args[str(arg)] = json.loads(self.request.params[arg])
 
                 attr = getattr(self, action)
                 out['status'] = 'success'
@@ -84,7 +84,7 @@ class JsonService(webapp.RequestHandler):
                     for i in xrange(1, num_args):
                         part = (', ' if spec else '') + args[i]
                         if defaults and i >= diff:
-                            def_val = simplejson.dumps(defaults[i - diff])
+                            def_val = json.dumps(defaults[i - diff])
                             part = '[%s=%s]' % (part, def_val)
                         spec += part
 
@@ -105,6 +105,6 @@ class JsonService(webapp.RequestHandler):
             res.close()
 
         self.response.headers['Content-Type'] = 'application/json'
-        self.response.out.write(simplejson.dumps(out, separators=(',', ':')))
+        self.response.out.write(json.dumps(out, separators=(',', ':')))
 
     post = get
