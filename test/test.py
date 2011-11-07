@@ -17,7 +17,7 @@ assert user_id,\
        'Did not get a user id'
 # TODO(blixt): Test that makes sure invalid party id fails.
 
-api.vote(party_id, user_id, 'spotify:track:6JEK0CvvjDjjMUBFoXShNZ')
+api.vote(party_id, user_id, 'spotify:track:1bLS4tJdifOlblwmu7ZxQA')
 # TODO(blixt): Test that makes sure invalid party id fails.
 # TODO(blixt): Test that makes sure invalid user id fails.
 # TODO(blixt): Test that makes sure invalid URI fails.
@@ -27,26 +27,33 @@ assert len(songs) == 1,\
        'Incorrect number of songs (%d != 1)' % (len(songs),)
 
 title = songs[0].get('title')
-assert title == 'Never Gonna Give You Up',\
+assert title == 'Canon - Primo',\
        'Incorrect song metadata (%r)' % (title,)
 
-api.vote(party_id, user_id, 'spotify:track:10hvuZPLofcO8QyOCDnqkr')
-api.vote(party_id, user_id, 'spotify:track:3EB4v3xdTb7zkMUvaksDf6')
-api.vote(party_id, user_id, 'spotify:track:6JEK0CvvjDjjMUBFoXShNZ')
-test_uri_1 = 'spotify:track:6SAT9ooZzVMGCP4iTf2rKZ'
+api.vote(party_id, user_id, 'spotify:track:5iGVZHnAY0JHBZwumMqOcN')
+test_uri_1 = 'spotify:track:4woQ1mc7PzrQ39j0asLJrf'
 api.vote(party_id, user_id, test_uri_1)
 api.vote(party_id, user_id, test_uri_1)
 
 songs = api.queue(party_id)
-assert len(songs) == 4,\
-       'Incorrect number of songs (%d != 4)' % (len(songs),)
+assert len(songs) == 3,\
+       'Incorrect number of songs (%d != 3)' % (len(songs),)
 
-test_uri_2 = songs[3].get('uri')
+test_uri_2 = songs[2].get('uri')
 assert test_uri_1 == test_uri_2,\
        'Error in queue (%r != %r)' % (test_uri_1, test_uri_2)
 
-api.pop(party_id)
-
+# Pop a track to trigger the Echo Nest API fetch.
+api.pop(party_id)['title']
 songs = api.queue(party_id)
-from pprint import pprint
-pprint(songs)
+# Pop more tracks to trigger the fetch again.
+for i in xrange(len(songs) - 3):
+    api.pop(party_id)
+songs = api.queue(party_id)
+
+uris = []
+for song in songs:
+    uri = song['uri']
+    assert uri not in uris,\
+           'Song appeared twice in queue'
+    uris.append(uri)
