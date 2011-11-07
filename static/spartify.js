@@ -157,6 +157,15 @@ var spartify = function () {
 		return !!localStorage[code + ':master'];
 	}
 
+	// Custom pushState that also registers Google Analytics page views.
+	pushState = function pushState(state, title, url) {
+		var path = location.pathname;
+		history.pushState(state, title, url);
+		if (location.pathname != path) {
+			_gaq.push(['_trackPageview', location.pathname]);
+		}
+	};
+
 	function go(page) {
 		switch (page) {
 			case 'join':
@@ -286,7 +295,7 @@ var spartify = function () {
 		setPartyCode(code);
 
 		if (!skipPush) {
-			history.pushState({
+			pushState({
 					page: 'party',
 					partyCode: code
 				}, null, '/' + code);
@@ -328,7 +337,7 @@ var spartify = function () {
 
 	$('#go-join').click(function () {
 		go('join');
-		history.pushState({page: 'join'}, null, '/join');
+		pushState({page: 'join'}, null, '/join');
 	});
 
 	// Join party page
@@ -421,7 +430,7 @@ var spartify = function () {
 	// Generic
 	$('.go-to-main').click(function () {
 		go('main');
-		history.pushState({page: 'main'}, null, '/');
+		pushState({page: 'main'}, null, '/');
 	});
 
 
@@ -436,7 +445,7 @@ var spartify = function () {
 			joinParty(location.pathname.substring(1),
 				function () {
 					go('main');
-					history.pushState({page: 'main'}, null, '/');
+					pushState({page: 'main'}, null, '/');
 				});
 			break;
 	}
@@ -457,7 +466,7 @@ var spartify = function () {
 				joinParty(s.partyCode,
 					function () {
 						$('button.nav').attr('disabled', false);
-						history.pushState({page: 'main'}, null, '/');
+						pushState({page: 'main'}, null, '/');
 					}, true);
 				break;
 		}
