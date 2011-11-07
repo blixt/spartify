@@ -17,3 +17,13 @@ song and add it to play queue.
 == Multiple hosts ==
 Support several hosts so that people can have devices on several rooms or even
 locations playing in sync.
+
+== Small UX improvements ==
+- Clear button on search
+- Allow host/master to remove tracks
+- Pre-cache with "browse only" flag or track sets
+- Detect unplayable tracks
+- Make it easier to see most recently added tracks when there are many tracks
+  in the queue
+- Show a history of played tracks
+- Provide a way to export the party music as a playlist
