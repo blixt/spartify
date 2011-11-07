@@ -80,7 +80,7 @@ var spartify = function () {
 					if (error) error(data);
 					return;
 				}
-				callback(data, success || jQuery.noop, error || jQuery.noop);
+				callback(data, success || $.noop, error || $.noop);
 			});
 		};
 	}
@@ -261,7 +261,11 @@ var spartify = function () {
 		});
 
 		playing = song.uri;
-		$('#open').attr('src', playing);
+		if ($.browser.webkit) {
+			$('#open').attr('src', playing);
+		} else {
+			location.href = playing;
+		}
 	}
 
 	var container = $('#queue');
