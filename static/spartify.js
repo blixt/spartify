@@ -286,7 +286,6 @@ var spartify = function () {
 
 		// The API won't return any data if there was no update.
 		if (!data) return;
-		console.log(data);
 		queue = data.queue;
 		queueVersion = data.version;
 
