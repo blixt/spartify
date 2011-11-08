@@ -17,8 +17,8 @@ class API(object):
         return party.join(party_id)
 
     @validate
-    def queue(self, party_id):
-        return party.Party(party_id).get_queue()
+    def queue(self, party_id, version=None):
+        return party.Party(party_id).get_queue(version)
 
     @validate
     def pop(self, party_id):

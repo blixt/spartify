@@ -24,8 +24,11 @@ class Party(object):
                 self._queue.add(t, 0)
         return track.to_dict()
 
-    def get_queue(self):
-        return [x.to_dict() for x in self._queue.all]
+    def get_queue(self, version=None):
+        if version and not version < self._queue.version:
+            # No changes to the queue
+            return
+        return self._queue.version, [x.to_dict() for x in self._queue.all]
 
     def get_played(self):
         return [t.to_dict() for t in self._played.all]
