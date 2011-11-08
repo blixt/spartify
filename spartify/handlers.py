@@ -28,11 +28,13 @@ class API(object):
 
     @validate
     def queue(self, party_id, version=None):
-        queue, version = party.Party(party_id).get_queue(version)
-        return {
-                'queue': queue,
-                'version': version,
-                }
+        result = party.Party(party_id).get_queue(version)
+        if result:
+            queue, version = result
+            return {
+                    'queue': queue,
+                    'version': version,
+                    }
 
     @validate
     def pop(self, party_id):
