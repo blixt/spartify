@@ -1,66 +1,5 @@
 var spartify = function () {
-	// A mock API for testing.
-	function MockApi() {
-		this.mock_songs_ = [];
-	}
-	MockApi.prototype.createParty = function (success, error) {
-		console.log('MockApi: createParty');
-		setTimeout(function () {
-			success('ABCDEFG1234');
-		}, 300);
-	};
-	MockApi.prototype.joinParty = function (partyCode, success, error) {
-		console.log('MockApi: joinParty', partyCode);
-		setTimeout(function () {
-			success({user_id: 'USERID123', songs: [
-				{album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title #1', uri: 'abc'},
-				{album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title #2', uri: 'def'}
-			]});
-		}, 300);
-	};
-	MockApi.prototype.getSongs = function (partyCode, success, error) {
-		console.log('MockApi: getSongs', partyCode);
-		var t = this;
-		setTimeout(function () {
-			success(t.mock_songs_);
-		}, 300);
-	};
-	MockApi.prototype.pop = function (partyCode, success, error) {
-		console.log('MockApi: pop', partyCode);
-		var t = this;
-		setTimeout(function () {
-			success(t.mock_songs_.unshift());
-		}, 300);
-	};
-	MockApi.prototype.vote = function (partyCode, userId, uri, success, error) {
-		console.log('MockApi: vote', partyCode, userId, uri);
-		var t = this;
-		setTimeout(function () {
-			var i;
-			if (Math.random() < 0.3 && t.mock_songs_.length > 1) {
-				i = Math.floor(Math.random() * (t.mock_songs_.length - 1));
-				var song = t.mock_songs_[i];
-				t.mock_songs_[i] = t.mock_songs_[i + 1];
-				t.mock_songs_[i + 1] = song;
-			}
-
-			var add = true;
-			for (i = 0; i < t.mock_songs_.length; i++) {
-				if (t.mock_songs_[i] == uri) {
-					add = false;
-					break;
-				}
-			}
-			if (add) t.mock_songs_.push({album: 'Test Album', artist: 'Test Artist', length: 100, title: 'Title', uri: uri});
-
-			success();
-		}, 300);
-	};
-
-
-	// The real API.
-	function Api() {
-	}
+	function Api() {}
 	Api.createHandler = function (method, argNames, callback) {
 		return function () {
 			if (arguments.length - 2 != argNames.length) {
@@ -133,7 +72,6 @@ var spartify = function () {
 
 
 	return {
-		//api: new MockApi()
 		api: new Api()
 	};
 }();

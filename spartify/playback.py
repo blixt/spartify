@@ -3,6 +3,7 @@ import config
 from spartify.stores import store
 from spartify.util import index_of
 from spartify.track import Track
+from time import time
 
 
 class BaseQueue(object):
@@ -12,12 +13,19 @@ class BaseQueue(object):
 
     def _load(self):
         try:
-            self._queue = store[self._key]
+            data = store[self._key]
+            if len(data) > 0 and type(data[0] is str):
+                # backwards compatible...
+                self.version, self._queue = store[self._key]
+            else:
+               self.version, self._queue = '0', data
         except KeyError:
-            self._queue = []
+            self.version, self._queue = '0', []
 
     def _save(self):
-        store.timeout_store(self._key, self._queue, config.PARTY_EXPIRE_TIMEOUT)
+        self.version = str(time())
+        store.timeout_store(self._key, (self.version, self._queue,),
+                config.PARTY_EXPIRE_TIMEOUT)
 
     def __len__(self):
         return len(self._queue)
