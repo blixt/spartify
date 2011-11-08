@@ -78,7 +78,7 @@ var spartify = function () {
 
 // Interface code.
 (function () {
-	var partyCode, timeout, playing, queue, queueVersion;
+	var partyCode, playing, queue, queueVersion;
 
 	function clearState() {
 		partyCode = null;
@@ -134,7 +134,7 @@ var spartify = function () {
 		$(window).scrollTop(0);
 
 		if (page != 'party') {
-			clearTimeout(timeout);
+			stopGetSongs();
 			clearState();
 		}
 	}
@@ -205,7 +205,9 @@ var spartify = function () {
 			},
 			complete: function () {
 				spartify.api.pop(getPartyCode(),
-					null,
+					function () {
+						deferGetSongs();
+					},
 					null);
 			}
 		});
@@ -220,8 +222,7 @@ var spartify = function () {
 
 	var container = $('#queue');
 	function songsCallback(data) {
-		clearTimeout(timeout);
-		timeout = setTimeout(getSongs, 5000);
+		deferGetSongs(5000);
 
 		// The API won't return any data if there was no update.
 		if (!data) return;
@@ -236,9 +237,12 @@ var spartify = function () {
 
 	function vote(song) {
 		spartify.api.vote(getPartyCode(), getUserId() || 'NO_USER_ID', song.uri,
-			null,
+			function () {
+				deferGetSongs();
+			},
 			function () {
 				queueVersion = undefined;
+				deferGetSongs();
 			});
 
 		// Simulate the addition of the track to make UI feel snappier.
@@ -250,6 +254,20 @@ var spartify = function () {
 		// TODO(blixt): Refactor away this duplicate code.
 		$('#party-room h2').toggle(queue.length > 0);
 	}
+
+	var stopGetSongs, deferGetSongs;
+	(function () {
+		var timeout;
+
+		deferGetSongs = function (delay) {
+			stopGetSongs();
+			timeout = setTimeout(getSongs, delay || 150);
+		}
+
+		stopGetSongs = function () {
+			clearTimeout(timeout);
+		}
+	})();
 
 	function getSongs() {
 		var code = getPartyCode();
