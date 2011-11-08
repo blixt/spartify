@@ -87,28 +87,43 @@ var spartify = function () {
 	Api.prototype.createParty = Api.createHandler('start',
 		[],
 		function (data, success, error) {
-			success(data.response[0]);
+			var res = data.response;
+			if (res instanceof Array) {
+				success({
+					id: res[0],
+					queue: []});
+			} else {
+				success(res);
+			}
 		});
 	Api.prototype.joinParty = Api.createHandler('join',
 		['party_id'],
 		function (data, success, error) {
-			if (!data.response) {
+			var res = data.response;
+			if (!res) {
 				error('That room doesn\'t exist');
-				return;
+			} else if (res instanceof Array) {
+				success({
+					guest: res[0],
+					queue: res[1]});
+			} else {
+				success(res);
 			}
-			success({
-				user_id: data.response[0],
-				songs: data.response[1]});
 		});
 	Api.prototype.getSongs = Api.createHandler('queue',
-		['party_id'],
+		['party_id', 'version'],
 		function (data, success, error) {
-			success(data.response);
+			var res = data.response;
+			if (res instanceof Array) {
+				success({queue: res});
+			} else {
+				success(res);
+			}
 		});
 	Api.prototype.pop = Api.createHandler('pop',
 		['party_id'],
 		function (data, success, error) {
-			success(data.response);
+			success();
 		});
 	Api.prototype.vote = Api.createHandler('vote',
 		['party_id', 'user_id', 'track_uri'],
@@ -125,7 +140,7 @@ var spartify = function () {
 
 // Interface code.
 (function () {
-	var partyCode, timeout, playing, queue;
+	var partyCode, timeout, playing, queue, queueVersion;
 
 	function clearState() {
 		partyCode = null;
@@ -251,8 +266,8 @@ var spartify = function () {
 			},
 			complete: function () {
 				spartify.api.pop(getPartyCode(),
-					function () {},
-					function () {});
+					null,
+					null);
 			}
 		});
 
@@ -265,31 +280,36 @@ var spartify = function () {
 	}
 
 	var container = $('#queue');
-	function songsCallback(songs) {
-		$('#party-room h2').toggle(songs.length > 0);
-		fillSongList(container, songs);
-
-		queue = songs;
-		if (isMaster()) play();
-
+	function songsCallback(data) {
 		clearTimeout(timeout);
 		timeout = setTimeout(getSongs, 5000);
+
+		// The API won't return any data if there was no update.
+		if (!data) return;
+		console.log(data);
+		queue = data.queue;
+		queueVersion = data.version;
+
+		$('#party-room h2').toggle(queue.length > 0);
+		fillSongList(container, queue);
+
+		if (isMaster()) play();
 	}
 
 	function vote(uri) {
 		if (!uri) return;
 		spartify.api.vote(getPartyCode(), getUserId() || 'NO_USER_ID', uri,
-			function () {},
-			function () {});
+			null,
+			null);
 	}
-	
+
 	function getSongs() {
 		var code = getPartyCode();
 		if (!code) return;
 
-		spartify.api.getSongs(code,
+		spartify.api.getSongs(code, queueVersion,
 			songsCallback,
-			function () {});
+			null);
 	}
 
 	function enterParty(code, skipPush) {
@@ -304,8 +324,6 @@ var spartify = function () {
 
 		$('#party-code').html('Party code is: <code>' + code + '</code>');
 		go('party');
-
-		getSongs();
 	}
 
 	function joinParty(code, onerror, skipPush) {
@@ -313,10 +331,10 @@ var spartify = function () {
 			function (data) {
 				// TODO(blixt): We currently throw away a user id here. Improve API so we don't have to do that.
 				if (!getUserId(code)) {
-					setUserId(code, data['user_id']);
+					setUserId(code, data.guest);
 				}
 				enterParty(code, skipPush);
-				songsCallback(data['songs']);
+				songsCallback(data);
 			},
 			onerror);
 	}
@@ -327,9 +345,10 @@ var spartify = function () {
 		$('button.nav').attr('disabled', true);
 		$('#party-code').text('...');
 		spartify.api.createParty(
-			function (code) {
-				setIsMaster(code, true);
-				enterParty(code);
+			function (data) {
+				setIsMaster(data.id, true);
+				enterParty(data.id);
+				songsCallback(data);
 			},
 			function () {
 				go('main');
