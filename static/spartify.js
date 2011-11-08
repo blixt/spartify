@@ -217,6 +217,7 @@ var spartify = function () {
 
 			if (!li.length) {
 				li = $('<li>')
+					.data('song', song)
 					.attr('data-uri', song.uri)
 					.append(
 						$('<span>').addClass('title').text(song.title),
@@ -295,11 +296,21 @@ var spartify = function () {
 		if (isMaster()) play();
 	}
 
-	function vote(uri) {
-		if (!uri) return;
-		spartify.api.vote(getPartyCode(), getUserId() || 'NO_USER_ID', uri,
+	function vote(song) {
+		spartify.api.vote(getPartyCode(), getUserId() || 'NO_USER_ID', song.uri,
 			null,
-			null);
+			function () {
+				queueVersion = undefined;
+			});
+
+		// Simulate the addition of the track to make UI feel snappier.
+		for (var i = 0; i < queue.length; i++) {
+			if (queue[i].uri == song.uri) return;
+		}
+		queue.push(song);
+		fillSongList(container, queue);
+		// TODO(blixt): Refactor away this duplicate code.
+		$('#party-room h2').toggle(queue.length > 0);
 	}
 
 	function getSongs() {
@@ -387,8 +398,8 @@ var spartify = function () {
 
 	// Party page
 	$('.song-list button').live('click', function () {
-		var uri = $(this).closest('li').data('uri');
-		vote(uri);
+		var song = $(this).closest('li').data('song');
+		vote(song);
 	});
 
 	(function () {
