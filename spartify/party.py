@@ -28,10 +28,13 @@ class Party(object):
         if version and not version < self._queue.version:
             # No changes to the queue
             return
-        return self._queue.version, [x.to_dict() for x in self._queue.all]
+        return [x.to_dict() for x in self._queue.all], self._queue.version
 
     def get_played(self):
-        return [t.to_dict() for t in self._played.all]
+        if version and not version < self._played.version:
+            # No changes to the queue
+            return
+        return [x.to_dict() for x in self._played.all], self._played.version
 
     def vote(self, user, track_uri):
         user_vote_key = 'vote:%s:%s' % (user, track_uri,)
@@ -47,7 +50,7 @@ def create():
     party_id = create_id(size=5)
     key = 'party:%s' % (party_id,)
     store.timeout_store(key, 1, config.PARTY_JOIN_TIMEOUT)
-    return party_id, []
+    return party_id, [], '0'
 
 def join(party_id):
     return create_id(), Party(party_id).get_queue()

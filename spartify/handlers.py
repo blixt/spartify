@@ -10,23 +10,39 @@ def validate(f):
 
 class API(object):
     def start(self):
-        return party.create()
+        party_id, queue, version = party.create()
+        return {
+                'id': party_id,
+                'queue': queue,
+                'version': version,
+                }
 
     @validate
     def join(self, party_id):
-        return party.join(party_id)
+        guest_id, (queue, version,) = party.join(party_id)
+        return {
+                'guest': guest_id,
+                'queue': queue,
+                'version': version,
+                }
 
     @validate
     def queue(self, party_id, version=None):
-        return party.Party(party_id).get_queue(version)
+        queue, version = party.Party(party_id).get_queue(version)
+        return {
+                'queue': queue,
+                'version': version,
+                }
 
     @validate
     def pop(self, party_id):
-        return party.Party(party_id).pop_track()
+        party.Party(party_id).pop_track()
+        return None
 
     @validate
     def vote(self, party_id, user_id, track_uri):
-        return party.Party(party_id).vote(user_id, track_uri)
+        party.Party(party_id).vote(user_id, track_uri)
+        return None
 
 
 class SpartifyService(API, util.JsonService):
