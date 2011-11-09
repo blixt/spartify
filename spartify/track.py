@@ -31,7 +31,6 @@ class Track:
                         self.uri)
                 res = fetch(url)
                 res = json.loads(res.content)
-                logging.info(str(res))
                 res_track = res['track']
                 self.set_metadata(
                     res_track['name'],
