@@ -1,4 +1,6 @@
 CACHE MANIFEST
+
+CACHE:
 /static/jquery-1.7.min.js
 /static/spartify.css
 /static/spartify.js
@@ -12,3 +14,6 @@ http://themes.googleusercontent.com/static/fonts/novamono/v3/pN6VVBY03b9QLz-7i6K
 http://fonts.googleapis.com/css?family=Nova+Mono
 http://themes.googleusercontent.com/static/fonts/rancho/v2/EJt_7DbHYj8a5HS0_pTrl-vvDin1pK8aKteLpeZ5c0A.woff
 http://fonts.googleapis.com/css?family=Rancho
+
+NETWORK:
+*

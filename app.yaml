@@ -5,6 +5,10 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /static/spartify.appcache
+  static_files: static/spartify.appcache
+  mime_type: text/cache-manifest
+  upload: static/spartify.appcache
 - url: /static
   static_dir: static
 - url: /api/.*
