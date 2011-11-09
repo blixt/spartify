@@ -61,7 +61,7 @@ class Queue(BaseQueue):
         return track, votes
     
     def vote(self, track_uri):
-        pos = index_of(self._queue, track_uri, lambda x: x[0].uri)
+        pos = index_of(self._queue, track_uri, lambda x: x[0]['uri'])
         if pos is None:
             # new track
             track = Track(track_uri)
