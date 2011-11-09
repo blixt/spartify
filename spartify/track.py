@@ -25,7 +25,6 @@ class Track:
         self._metadata_set = True
 
     def lookup(self):
-        import logging
         if not self._metadata_set:
             try:
                 url = '%slookup/1/.json?uri=%s' % (config.SPOTIFY_BASE_URL,

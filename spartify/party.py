@@ -21,20 +21,20 @@ class Party(object):
         if len(self._queue) < config.PARTY_QUEUE_PANIC:
             for t in find_similar_tracks(self._queue.all):
                 # add simillar track to queue, no votes.
-                self._queue.add(t, 0)
-        return track.to_dict()
+                self._queue.add(t.to_dict(), 0)
+        return track
 
     def get_queue(self, version=None):
         if version and not version < self._queue.version:
             # No changes to the queue
             return
-        return [x.to_dict() for x in self._queue.all], self._queue.version
+        return [x for x in self._queue.all], self._queue.version
 
     def get_played(self):
         if version and not version < self._played.version:
             # No changes to the queue
             return
-        return [x.to_dict() for x in self._played.all], self._played.version
+        return [x for x in self._played.all], self._played.version
 
     def vote(self, user, track_uri):
         user_vote_key = 'vote:%s:%s' % (user, track_uri,)

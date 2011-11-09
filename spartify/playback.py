@@ -14,18 +14,22 @@ class BaseQueue(object):
     def _load(self):
         try:
             data = store[self._key]
-            if len(data) > 0 and type(data[0] is str):
-                # backwards compatible...
-                self.version, self._queue = store[self._key]
+            if type(data) is dict:
+                self.version = data['version']
+                self._queue = data['queue']
             else:
+               # backwards compatible...
                self.version, self._queue = '0', data
         except KeyError:
             self.version, self._queue = '0', []
 
     def _save(self):
         self.version = str(time())
-        store.timeout_store(self._key, (self.version, self._queue,),
-                config.PARTY_EXPIRE_TIMEOUT)
+        data = {
+                'version': self.version,
+                'queue': self._queue,
+                }
+        store.timeout_store(self._key, data, config.PARTY_EXPIRE_TIMEOUT)
 
     def __len__(self):
         return len(self._queue)
@@ -59,9 +63,12 @@ class Queue(BaseQueue):
     def vote(self, track_uri):
         pos = index_of(self._queue, track_uri, lambda x: x[0].uri)
         if pos is None:
+            # new track
             track = Track(track_uri)
             # it's ok to lookup now since voting doesn't require prompt action
             track.lookup()
+            # Remove Track if not needed
+            track = track.to_dict()
             votes = 0
             pos = len(self._queue)
         else:

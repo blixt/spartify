@@ -8,7 +8,7 @@ from spartify.track import Track
 
 def find_similar_tracks(tracks):
     result = set()
-    similar_artists = find_similar_artists(track.artist for track in tracks)
+    similar_artists = find_similar_artists(track['artist'] for track in tracks)
     url = '%ssong/search?api_key=%s&artist_id=%%s&sort=song_hotttnesss-desc&results=%s'\
             % (config.ECHONEST_BASE_URL, config.ECHONEST_API_KEY,
                     config.ECHONEST_MAX_TRACKS_PER_ARTIST,)
