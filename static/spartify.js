@@ -238,6 +238,7 @@ var spartify = function () {
 	function vote(song) {
 		spartify.api.vote(getPartyCode(), getUserId() || 'NO_USER_ID', song.uri,
 			function () {
+				queueVersion = undefined;
 				deferGetSongs();
 			},
 			function () {
