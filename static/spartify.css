@@ -169,13 +169,13 @@ section {
 	width: 100%;
 }
 
-.song-list button {
-	box-shadow: rgba(0, 0, 0, .3) 0 3px 3px inset;
-	font-size: 16px;
-	padding: 5px 10px;
+.song-list .vote {
+	font-size: 27px;
+	font-weight: bold;
+	line-height: 48px;
 	position: absolute;
-	right: 8px;
-	top: 8px;
+	right: 9px;
+	top: 0;
 }
 
 .song-list li {
@@ -186,6 +186,7 @@ section {
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	cursor: pointer;
 	display: block;
 	height: 50px;
 	padding: 5px;
@@ -194,7 +195,14 @@ section {
 	transition: top 500ms;
 	-moz-transition: top 500ms;
 	-webkit-transition: top 500ms;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 	width: 100%;
+}
+
+.song-list li:hover .vote {
+	color: #0c0;
 }
 
 .song-list span {
@@ -233,7 +241,7 @@ section {
 }
 
 #logo {
-	margin: 0 auto;
+	margin: 5px auto 0;
 	max-width: 375px;
 	width: 100%;
 }

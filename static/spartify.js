@@ -158,9 +158,9 @@ var spartify = function () {
 					.data('song', song)
 					.attr('data-uri', song.uri)
 					.append(
-						$('<span>').addClass('title').text(song.title),
-						$('<span>').addClass('artist').text(song.artist),
-						$('<button>+1</button>'))
+						$('<span class="title">').text(song.title),
+						$('<span class="artist">').text(song.artist),
+						$('<span class="vote">+1</span>'))
 					.appendTo(list);
 			} else {
 				traversed.push(li[0]);
@@ -354,9 +354,8 @@ var spartify = function () {
 	});
 
 	// Party page
-	$('.song-list button').live('click', function () {
-		var song = $(this).closest('li').data('song');
-		vote(song);
+	$('.song-list li').live('click', function () {
+		vote($(this).data('song'));
 	});
 
 	(function () {
