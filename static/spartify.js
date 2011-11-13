@@ -340,7 +340,16 @@ var spartify = function () {
 
 	// Party page
 	$('.song-list li').live('click', function () {
-		vote($(this).data('song'));
+		var li = $(this);
+
+		// Limit clicking on an item to once per 1 sec.
+		if (li.hasClass('voted')) return;
+		li.addClass('voted');
+		setTimeout(function () {
+			li.removeClass('voted');
+		}, 1000);
+
+		vote(li.data('song'));
 	});
 
 	(function () {

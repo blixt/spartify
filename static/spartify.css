@@ -17,6 +17,21 @@
 	50% {left: 15px; }
 }
 
+@keyframes vote-click {
+	0% { background-color: #bfb; }
+	100% { background-color: #fff; }
+}
+
+@-moz-keyframes vote-click {
+	0% { background-color: #bfb; }
+	100% { background-color: #fff; }
+}
+
+@-webkit-keyframes vote-click {
+	0% { background-color: #bfb; }
+	100% { background-color: #fff; }
+}
+
 a {
 	color: #474;
 	text-decoration: none;
@@ -203,6 +218,15 @@ section {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	width: 100%;
+}
+
+.song-list li.voted {
+	animation-name: vote-click;
+	animation-duration: 300ms;
+	-moz-animation-name: vote-click;
+	-moz-animation-duration: 300ms;
+	-webkit-animation-name: vote-click;
+	-webkit-animation-duration: 300ms;
 }
 
 .song-list li:hover .vote {
