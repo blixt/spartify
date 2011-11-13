@@ -26,14 +26,7 @@ var spartify = function () {
 	Api.prototype.createParty = Api.createHandler('start',
 		[],
 		function (data, success, error) {
-			var res = data.response;
-			if (res instanceof Array) {
-				success({
-					id: res[0],
-					queue: []});
-			} else {
-				success(res);
-			}
+			success(data.response);
 		});
 	Api.prototype.joinParty = Api.createHandler('join',
 		['party_id'],
@@ -41,10 +34,6 @@ var spartify = function () {
 			var res = data.response;
 			if (!res) {
 				error('That room doesn\'t exist');
-			} else if (res instanceof Array) {
-				success({
-					guest: res[0],
-					queue: res[1]});
 			} else {
 				success(res);
 			}
@@ -52,12 +41,7 @@ var spartify = function () {
 	Api.prototype.getSongs = Api.createHandler('queue',
 		['party_id', 'version'],
 		function (data, success, error) {
-			var res = data.response;
-			if (res instanceof Array) {
-				success({queue: res});
-			} else {
-				success(res);
-			}
+			success(data.response);
 		});
 	Api.prototype.pop = Api.createHandler('pop',
 		['party_id'],
