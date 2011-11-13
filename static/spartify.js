@@ -404,26 +404,32 @@ var spartify = function () {
 		pushState({page: 'main'}, null, '/');
 	});
 
-
-	switch (location.pathname) {
-		case '/':
-			go('main');
-			break;
-		case '/join':
-			go('join');
-			break;
-		default:
-			joinParty(location.pathname.substring(1),
-				function () {
-					go('main');
-					pushState({page: 'main'}, null, '/');
-				});
-			break;
+	function goByPath(path) {
+		switch (path) {
+			case '/':
+				go('main');
+				break;
+			case '/join':
+				go('join');
+				break;
+			default:
+				joinParty(path.substring(1),
+					function () {
+						go('main');
+						pushState({page: 'main'}, null, '/');
+					});
+				break;
+		}
 	}
+	goByPath(location.pathname);
 
 	$(window).on('popstate', function (e) {
 		var s = e.originalEvent.state;
-		if (!s) return;
+		if (!s) {
+			// This is the original state.
+			goByPath(location.pathname);
+			return;
+		}
 
 		switch (s.page) {
 			case 'join':
