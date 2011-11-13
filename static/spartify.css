@@ -150,6 +150,10 @@ input.invalid {
 	position: relative;
 }
 
+p {
+	margin-bottom: 0;
+}
+
 section {
 	margin: 0;
 	width: 100%;
