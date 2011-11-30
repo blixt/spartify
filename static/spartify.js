@@ -307,6 +307,13 @@ var spartify = function () {
 			});
 	});
 
+	$('#go-about').click(function (e) {
+		e.preventDefault();
+
+		go('about');
+		pushState({page: 'about'}, null, '/about');
+	});
+
 	$('#go-join').click(function () {
 		go('join');
 		pushState({page: 'join'}, null, '/join');
@@ -418,6 +425,9 @@ var spartify = function () {
 			case '/':
 				go('main');
 				break;
+			case '/about':
+				go('about');
+				break;
 			case '/join':
 				go('join');
 				break;
@@ -441,6 +451,9 @@ var spartify = function () {
 		}
 
 		switch (s.page) {
+			case 'about':
+				go('about');
+				break;
 			case 'join':
 				go('join');
 				break;

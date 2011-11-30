@@ -259,6 +259,10 @@ section {
 	border-bottom-right-radius: 3px;
 }
 
+#about p {
+	text-align: justify;
+}
+
 #derp {
 	font-size: 12px;
 	margin: 30px 0;
@@ -274,9 +278,10 @@ section {
 	width: 100%;
 }
 
-.p-join, .p-main, .p-party {
+.p-about, .p-join, .p-main, .p-party {
 	display: none;
 }
+#p-about .p-about,
 #p-join .p-join,
 #p-main .p-main,
 #p-party .p-party
