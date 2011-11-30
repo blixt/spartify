@@ -307,13 +307,6 @@ var spartify = function () {
 			});
 	});
 
-	$('#go-about').click(function (e) {
-		e.preventDefault();
-
-		go('about');
-		pushState({page: 'about'}, null, '/about');
-	});
-
 	$('#go-join').click(function () {
 		go('join');
 		pushState({page: 'join'}, null, '/join');
@@ -415,7 +408,16 @@ var spartify = function () {
 	})();
 
 	// Generic
-	$('.go-to-main').click(function () {
+	$('.go-about').click(function (e) {
+		e.preventDefault();
+
+		go('about');
+		pushState({page: 'about'}, null, '/about');
+	});
+
+	$('.go-main').click(function (e) {
+		e.preventDefault();
+
 		go('main');
 		pushState({page: 'main'}, null, '/');
 	});
