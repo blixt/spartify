@@ -69,6 +69,7 @@ var spartify = function () {
 	}
 
 	function setPartyCode(code) {
+		localStorage.lastCode = code;
 		partyCode = code;
 	}
 
@@ -107,6 +108,17 @@ var spartify = function () {
 		switch (page) {
 			case 'join':
 				$('#join-party-code').val('').change();
+				break;
+			case 'main':
+				var lastCode = localStorage.lastCode;
+				if (lastCode) {
+					$('#continue button')
+						.data('party-code', lastCode)
+						.text('Continue ' + lastCode);
+					$('#continue').show();
+				} else {
+					$('#continue').hide();
+				}
 				break;
 			case 'party':
 				$('#search').val('').change();
@@ -307,6 +319,10 @@ var spartify = function () {
 			});
 	});
 
+	$('#continue button').click(function () {
+		joinParty($(this).data('party-code'));
+	});
+
 	$('#go-join').click(function () {
 		go('join');
 		pushState({page: 'join'}, null, '/join');
@@ -330,11 +346,11 @@ var spartify = function () {
 
 	$('#join').click(function () {
 		$('button.nav').attr('disabled', true);
-		var button = $('#join-party-code');
-		joinParty(button.val(),
+		var input = $('#join-party-code');
+		joinParty(input.val(),
 			function () {
 				$('button.nav').attr('disabled', false);
-				button.removeClass('good').addClass('invalid');
+				input.removeClass('good').addClass('invalid');
 			});
 	});
 
