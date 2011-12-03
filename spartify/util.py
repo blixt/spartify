@@ -104,6 +104,7 @@ class JsonService(webapp2.RequestHandler):
             out['response'] = res.getvalue()
             res.close()
 
+        self.response.headers['Access-Control-Allow-Origin'] = '*'
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(out, separators=(',', ':')))
 
