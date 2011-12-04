@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link href="spartify.css" rel="stylesheet">
+	<title>Spartify</title>
+</head>
+<body id="view-start">
+	<h1>Spartify</h1>
+	<section class="view-start">
+		<button class="create nav" id="create-party">Start a party!</button>
+	</section>
+	<section class="view-party">
+		<p class="message">Great! Now tell your friends to go to spartify.com on their mobile phones and enter the following party code to start voting: <code id="party-code">XXXXX</code>
+		<p><input id="search" placeholder="Search for songs">
+		<ul class="track-list" id="search-results"></ul>
+		<h2>Queue</h2>
+		<ul class="track-list" id="queue"></ul>
+		<p><button class="cancel nav" id="leave-party">Leave party :(</button>
+	</section>
+	<script src="jquery-1.7.min.js"></script>
+	<script>
+	sp = getSpotifyApi(1);
+	spartify = sp.require('spartify');
+	spartify.init();
+	</script>
+</body>
+</html>

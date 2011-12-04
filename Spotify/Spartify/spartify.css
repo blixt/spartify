@@ -1,0 +1,229 @@
+@import url(sp://import/css/adam.css);
+
+@font-face {
+	font-family: 'Love Ya Like A Sister';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Love Ya Like A Sister Regular'), local('LoveYaLikeASister-Regular'), url('LoveYaLikeASister.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Rancho';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Rancho'), url('Rancho-Regular.ttf') format('truetype');
+}
+
+@-webkit-keyframes vote-click {
+	0% { box-shadow: #06c 0 0 15px inset; }
+	100% { box-shadow: transparent 0 0 15px inset; }
+}
+
+body {
+	background: transparent;
+	color: #fff;
+	font-family: 'Lucida Grande', Arial, Helvetica, sans-serif;
+	margin: 0;
+	text-align: center;
+	padding: 20px 0 50px;
+}
+
+button {
+	background: #77f;
+	border: 0;
+	border-radius: 4px;
+	color: #fff;
+	cursor: pointer;
+	font-family: 'Rancho', sans-serif;
+	outline: 0;
+	padding: 5px;
+	position: relative;
+	text-shadow: rgba(0, 0, 0, .3) 2px 2px 0;
+}
+
+button.nav {
+	font-size: 40px;
+	-webkit-transition: box-shadow 150ms;
+	width: 100%;
+}
+button.nav:focus, button.nav:hover {
+	box-shadow: #77f 0 0 50px;
+	z-index: 1;
+}
+
+button.cancel {
+	background: #c42;
+}
+button.cancel:focus, button.cancel:hover {
+	box-shadow: #c42 0 0 50px;
+}
+
+button.create {
+	background: #6c1;
+}
+button.create:focus, button.create:hover {
+	box-shadow: #6c1 0 0 50px;
+}
+
+button[disabled] {
+	background: #aaa;
+	color: #444;
+}
+
+button[disabled]:focus, button[disabled]:hover {
+	box-shadow: none;
+}
+
+h1 {
+	font: 70px/70px normal 'Love Ya Like A Sister', sans-serif;
+	margin-bottom: 20px;
+	text-align: center;
+	text-shadow: #000 0 0 4px;
+}
+
+h2 {
+	font: 40px/40px normal 'Rancho', sans-serif;
+	margin-bottom: 10px;
+}
+
+html {
+	background-image: -webkit-linear-gradient(left, rgba(0, 0, 0, .3), transparent 25%, transparent 75%, rgba(0, 0, 0, .3)), url(tile.png);
+	overflow: auto;
+}
+
+input {
+	border: #112 solid 2px;
+	border-radius: 5px;
+	box-shadow: #ddd 0 0 5px inset;
+	box-sizing: border-box;
+	font-family: 'Rancho', sans-serif;
+	font-size: 40px;
+	outline: 0;
+	padding: 3px 5px;
+	width: 100%;
+}
+
+input:focus {
+	border-color: #0ad;
+}
+
+p.message {
+	background: rgba(0, 0, 0, .2);
+	border-radius: 3px;
+	font-size: 14px;
+	line-height: 1.4;
+	margin-bottom: 1em;
+	padding: 5px 8px;
+	text-align: justify;
+}
+
+p.message code {
+	color: #0af;
+	font-size: 15px;
+}
+
+section {
+	margin: 0 auto;
+	width: 360px;
+}
+
+.track-list {
+	display: block;
+	height: 0;
+	font-family: 'Rancho', sans-serif;	
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	position: relative;
+	-webkit-transition: height 200ms;
+	width: 100%;
+}
+
+.track-list .vote {
+	font-size: 27px;
+	font-weight: bold;
+	line-height: 48px;
+	position: absolute;
+	right: 9px;
+	top: 0;
+}
+
+.track-list li {
+	background: -webkit-linear-gradient(rgba(0, 0, 0, .3), rgba(0, 0, 0, .1) 80%, rgba(0, 0, 0, .3)), url(tile.png);
+	border-color: #111;
+	border-style: solid;
+	border-width: 0 0 1px;
+	box-sizing: border-box;
+	cursor: pointer;
+	display: block;
+	height: 50px;
+	padding: 5px;
+	position: absolute;
+	text-align: left;
+	-webkit-transition: top 500ms;
+	user-select: none;
+	width: 100%;
+}
+
+.track-list li.voted {
+	-webkit-animation-name: vote-click;
+	-webkit-animation-duration: 300ms;
+}
+
+.track-list li:hover .vote {
+	color: #000;
+	text-shadow: #333 0 1px 0;
+	visibility: visible;
+}
+
+.track-list span {
+	display: block;
+	line-height: 1.2;
+}
+
+.track-list span.title {
+	color: #fff;
+	font-size: 20px;
+	text-shadow: #000 0 1px 0;
+}
+
+.track-list span.artist {
+	color: #999;
+	font-size: 15px;
+}
+
+.track-list .first {
+	border-top-width: 1px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.track-list .last {
+	border-bottom-width: 1px;
+	border-bottom-left-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.track-list .vote {
+	visibility: hidden;
+}
+
+.view-party,
+.view-start
+{
+	display: none;
+}
+
+#view-party .view-party,
+#view-start .view-start
+{
+	display: block;
+}
+
+#queue {
+	margin-bottom: 10px;
+}
+
+#search-results {
+	margin: 3px 0 20px;
+}

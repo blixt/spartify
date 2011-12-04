@@ -1,0 +1,18 @@
+{
+	"BundleType": "Application",
+	"AppIcon": {
+		"36x18": "spartify-icon.png"
+	},
+	"AppName": {
+		"en": "Spartify"
+	},
+	"SupportedLanguages": [
+		"en"
+	],
+	"RequiredPermissions": [
+		"http://www.spartify.com"
+	],
+	"ApiPermissions": {
+		"core": ["private"]
+	}
+}
