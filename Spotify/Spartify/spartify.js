@@ -84,6 +84,7 @@ var el = {
 	createParty: $('#create-party'),
 	leaveParty: $('#leave-party'),
 	partyCode: $('#party-code'),
+	qrCode: $('#qr-code'),
 	queue: $('#queue'),
 	queueHeader: $('.view-party h2'),
 	search: $('#search'),
@@ -192,6 +193,7 @@ function enterParty(code) {
 	el.queueHeader.hide();
 	localStorage.partyCode = code;
 	el.partyCode.text(localStorage.partyCode);
+	el.qrCode.attr('src', 'https://chart.googleapis.com/chart?chs=100x100&cht=qr&chl=http://spartify.com/' + localStorage.partyCode);
 	el.body.attr('id', 'view-party');
 
 	playlist = null;
