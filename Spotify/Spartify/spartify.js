@@ -3,6 +3,7 @@
 sp = getSpotifyApi(1);
 
 var m = sp.require('sp://import/scripts/api/models');
+var ui = sp.require("sp://import/scripts/ui");
 
 exports.init = init;
 
@@ -108,10 +109,12 @@ function fillTrackList(element, tracks) {
 		}
 
 		if (!li.length) {
+			var cover = new ui.SPImage(track.cover);
 			li = $('<li>')
 				.data('track', track)
 				.attr('data-uri', track.uri)
 				.append(
+					$('<div class="cover">').append(cover.node),
 					$('<span class="title">').text(track.title),
 					$('<span class="artist">').text(track.artist),
 					$('<span class="vote">+1</span>'))
@@ -240,7 +243,8 @@ function init() {
 				var track = tracks[i];
 				list.push({
 					album: track.album.name,
-					artist: track.artists[0].name,
+					artist: getArtistNameList(track.artists),
+					cover: track.album.cover,
 					length: track.duration,
 					title: track.name,
 					uri: track.uri
@@ -251,7 +255,7 @@ function init() {
 
 		function search() {
 			counter++;
-			sp.core.suggestSearch(query, {
+			sp.core.search("*" + query + "*", true, false, {
 				onSuccess: (function (i) {
 					return function (data) {
 						if (counter > i) {
@@ -318,4 +322,13 @@ function init() {
 
 		currentTrack = m.player.track;
 	});	
+}
+
+function getArtistNameList(artists) {
+	var a = artists[0].name.decodeForHTML();
+	for (var j = 1; j < artists.length; j++) {
+		a += ", " + artists[j].name.decodeForText();
+	}
+	
+	return a;
 }

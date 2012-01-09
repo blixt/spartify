@@ -227,3 +227,17 @@ section {
 #search-results {
 	margin: 3px 0 20px;
 }
+
+.cover {
+	float:left;
+	height: 48px;
+	width: 48px;
+	margin-right: 5px;
+	margin-top: -4px;
+}
+
+.cover .image {
+	height: 48px;
+	width: 48px;
+	float: left;
+}
