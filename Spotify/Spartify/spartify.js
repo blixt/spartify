@@ -4,6 +4,7 @@ sp = getSpotifyApi(1);
 
 var m = sp.require('sp://import/scripts/api/models');
 var ui = sp.require("sp://import/scripts/ui");
+var dnd = sp.require('sp://import/scripts/dnd');
 
 exports.init = init;
 
@@ -109,16 +110,20 @@ function fillTrackList(element, tracks) {
 		}
 
 		if (!li.length) {
-			var cover = new ui.SPImage(track.cover);
 			li = $('<li>')
 				.data('track', track)
-				.attr('data-uri', track.uri)
+				.attr('data-uri', track)
 				.append(
-					$('<div class="cover">').append(cover.node),
+					$('<div class="cover">'),
 					$('<span class="title">').text(track.title),
 					$('<span class="artist">').text(track.artist),
 					$('<span class="vote">+1</span>'))
 				.appendTo(element);
+				
+			m.Track.fromURI(track.uri, function(t) {
+				var cover = new ui.SPImage(t.data.album.cover);
+				li.find(".cover").append(cover.node);
+			});
 		} else {
 			traversed.push(li[0]);
 		}
@@ -241,6 +246,7 @@ function init() {
 				if (i >= 5) break;
 
 				var track = tracks[i];
+				console.log(track);
 				list.push({
 					album: track.album.name,
 					artist: getArtistNameList(track.artists),
@@ -322,6 +328,67 @@ function init() {
 
 		currentTrack = m.player.track;
 	});	
+	
+	
+	var drop = document.querySelector(".drop-zone");
+	drop.addEventListener("dragenter", function(e) {
+		this.style.background = "#444444";
+	}, false);
+	
+	drop.addEventListener("dragover", function(e) {
+		e.preventDefault();
+		e.dataTransfer.dropEffect = "copy";
+		return false;
+	}, false);
+	
+	drop.addEventListener("dragleave", function(e) {
+		this.style.background = "inherit";
+	}, false);
+	
+	drop.addEventListener("drop", function(e) {
+		this.style.background = "inherit";
+		var link = m.Link.fromURL(e.dataTransfer.getData("Text"));
+		m.Playlist.fromURI(link.uri, function(p) {
+			var ints = new Array();
+			for (var i = 0; i < p.data.length; i++)
+				ints.push(i);
+			var i, j, k;
+			var temp;
+			for (i = 0; i < 20; i++) {
+				for (j = 0; j < p.data.length; j++) {
+					k = Math.floor(Math.random() * p.data.length);
+					temp = ints[j];
+					ints[j] = ints[k];
+					ints[k] = temp;
+				}
+			}
+			
+			$.each(ints, function(index, value) {
+				if (m.Link.getType(p.data.get(value)) != m.Link.TYPE.LOCAL_TRACK) {
+					var t = p.data.get(value);
+					setTimeout(function() {
+						console.log("Voting " + t);
+						m.Track.fromURI(t, function(track) {
+							vote(track);
+						});
+					}, index * 1000);
+				}
+			});
+			
+			/*for (var a = 0; a < p.data.length; a++) {
+				if (m.Link.getType(p.data.get(a)) != m.Link.TYPE.LOCAL_TRACK) {
+					setTimeout(function() {
+						console.log("Voting " + a);
+						m.Track.fromURI(p.data.get(a), function(track) {
+							vote(track);
+						});
+					}, a * 1000);
+				} else {
+					console.log("Local track");
+				}
+			}*/
+		});
+	}, false);
 }
 
 function getArtistNameList(artists) {
