@@ -10,7 +10,8 @@
 		"en"
 	],
 	"RequiredPermissions": [
-		"http://www.spartify.com"
+		"http://www.spartify.com",
+		"https://chart.googleapis.com"
 	],
 	"ApiPermissions": {
 		"core": ["private"]
