@@ -246,7 +246,6 @@ function init() {
 				if (i >= 5) break;
 
 				var track = tracks[i];
-				console.log(track);
 				list.push({
 					album: track.album.name,
 					artist: getArtistNameList(track.artists),
@@ -367,26 +366,12 @@ function init() {
 				if (m.Link.getType(p.data.get(value)) != m.Link.TYPE.LOCAL_TRACK) {
 					var t = p.data.get(value);
 					setTimeout(function() {
-						console.log("Voting " + t);
 						m.Track.fromURI(t, function(track) {
 							vote(track);
 						});
 					}, index * 1000);
 				}
 			});
-			
-			/*for (var a = 0; a < p.data.length; a++) {
-				if (m.Link.getType(p.data.get(a)) != m.Link.TYPE.LOCAL_TRACK) {
-					setTimeout(function() {
-						console.log("Voting " + a);
-						m.Track.fromURI(p.data.get(a), function(track) {
-							vote(track);
-						});
-					}, a * 1000);
-				} else {
-					console.log("Local track");
-				}
-			}*/
 		});
 	}, false);
 }
