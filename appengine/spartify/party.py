@@ -28,7 +28,7 @@ class Party(object):
             return
         return [x for x in self._queue.all], self._queue.version
 
-    def get_event_id():
+    def get_event_id(self):
         return stores.parties[party_id]['event_id']
 
     def vote(self, user, track_uri):
