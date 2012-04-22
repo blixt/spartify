@@ -28,6 +28,9 @@ class Party(object):
             return
         return [x for x in self._queue.all], self._queue.version
 
+    def get_event_id():
+        return stores.parties[party_id]['event_id']
+
     def vote(self, user, track_uri):
         user_vote_key = '%s:%s' % (user, track_uri,)
         if user_vote_key not in stores.votes:
@@ -45,7 +48,9 @@ def create(event_id):
     return party_id, [], '0'
 
 def join(party_id):
-    return create_id(), Party(party_id).get_queue()
+    guest_id = create_id()
+    party = Party(party_id)
+    return guest_id, party.get_event_id(), party.get_queue()
 
 def find(event_ids):
     parties = {}

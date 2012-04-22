@@ -20,11 +20,12 @@ class API(object):
 
     @validate
     def join(self, party_id):
-        guest_id, (queue, version,) = party.join(party_id)
+        guest_id, event_id, (queue, version,) = party.join(party_id)
         return {
                 'guest': guest_id,
                 'queue': queue,
                 'version': version,
+                'event_id': event_id,
                 }
 
     @validate
