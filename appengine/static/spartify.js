@@ -313,7 +313,7 @@ var spartify = function () {
   $('#start').click(function () {
     $('button.nav').attr('disabled', true);
     $('#party-code').text('...');
-    spartify.api.createParty(
+    spartify.api.createParty(null,
       function (data) {
         setIsMaster(data.id, true);
         enterParty(data.id);
