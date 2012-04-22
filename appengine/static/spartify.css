@@ -291,3 +291,8 @@ section {
 {
 	display: block;
 }
+
+ul {
+	list-style: none;
+	padding: 0;
+}

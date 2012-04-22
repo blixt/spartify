@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="/static/spartify.appcache" xmlns:fb="http://ogp.me/ns/fb#">
+<html xmlns:fb="http://ogp.me/ns/fb#">
 <head>
 <title>Spartify</title>
 <link href="/static/spartify.css" rel="stylesheet">
@@ -86,12 +86,15 @@ window.fbAsyncInit = function() {
 		FB.api('/me/events', function(res) {
 			console.log(res);
 			if (!res.data) return;
-			var eventIds = res.data.map(function(evt) { return evt.id; });
+			var events = {};
+			var eventIds = res.data.map(function(evt) { events[evt.id] = evt; return evt.id; });
 			spartify.api.findParties(eventIds, function(result) {
 				for (var eventId in result) {
 					$('#fb-parties').append(
 						$('<li>').append(
-							$('<a>').attr('href', '/' + result[eventId])));
+							$('<a>')
+								.attr('href', '/' + result[eventId])
+								.text(events[eventId].name)));
 				}
 			}, null);
 		});
