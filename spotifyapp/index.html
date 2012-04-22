@@ -8,7 +8,12 @@
 <body id="view-start">
 	<h1>Spartify</h1>
 	<section class="view-start">
-		<button class="create nav" id="create-party">Start a party!</button>
+		<p>Enter your party details
+		<p><input id="title" placeholder="Party name">
+		<p><textarea id="description" placeholder="Description of the party"></textarea>
+		<p><input id="where" placeholder="Location">
+		<p><input id="when" placeholder="When?">
+		<button class="create nav" id="create-party">Create the party!</button>
 	</section>
 	<section class="view-party">
 		<p class="message">Great! Now tell your friends to go to spartify.com on their mobile phones and enter the following party code to start voting: <code id="party-code">XXXXX</code>
@@ -20,9 +25,10 @@
 	</section>
 	<script src="jquery-1.7.min.js"></script>
 	<script>
-	sp = getSpotifyApi(1);
+	var sp = getSpotifyApi();
 	spartify = sp.require('spartify');
 	spartify.init();
 	</script>
+	<script src="fbstuff.js"></script>
 </body>
 </html>

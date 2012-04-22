@@ -8,10 +8,10 @@
 }
 
 @font-face {
-  font-family: 'Rancho';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Rancho'), url('Rancho-Regular.ttf') format('truetype');
+	font-family: 'Rancho';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Rancho'), url('Rancho-Regular.ttf') format('truetype');
 }
 
 @-webkit-keyframes vote-click {
@@ -91,19 +91,24 @@ html {
 	overflow: auto;
 }
 
-input {
+input, textarea {
 	border: #112 solid 2px;
 	border-radius: 5px;
 	box-shadow: #ddd 0 0 5px inset;
 	box-sizing: border-box;
 	font-family: 'Rancho', sans-serif;
 	font-size: 40px;
+	margin: 0;
 	outline: 0;
 	padding: 3px 5px;
 	width: 100%;
 }
 
-input:focus {
+textarea {
+	font-size: 15px;
+}
+
+input:focus, textarea:focus {
 	border-color: #0ad;
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="/static/spartify.appcache">
+<html manifest="/static/spartify.appcache" xmlns:fb="http://ogp.me/ns/fb#">
 <head>
 <title>Spartify</title>
 <link href="/static/spartify.css" rel="stylesheet">
@@ -29,8 +29,13 @@
 </section>
 <section class="p-main" id="actions">
 	<p id="continue" style="display: none;"><button class="nav">Continue XXXXX</button>
+	<ul id="fb-parties"></ul>
 	<p><button class="nav" id="go-join">Join a party</button>
 	<p><button class="nav create" id="start">Start a party!</button>
+	<div id="facebook-login">
+		<p>Log in with Facebook to find parties you're attending
+		<p><fb:login-button scope="user_events" show-faces="true" width="200" max-rows="1"></fb:login-button>
+	</div>
 </section>
 <section class="p-join" id="party-joiner">
 	<p><input id="join-party-code" placeholder="Enter party code here">
@@ -67,5 +72,49 @@
 <iframe id="open" style="display: none;"></iframe>
 <script src="/static/jquery-1.7.min.js"></script>
 <script src="/static/spartify.js"></script>
+<div id="fb-root"></div>
+<script>
+window.fbAsyncInit = function() {
+	FB.init({
+		appId: '373051182734312',
+		status: true,
+		cookie: true,
+		xfbml: true
+    });
+
+	function checkEvents() {
+		FB.api('/me/events', function(res) {
+			console.log(res);
+			if (!res.data) return;
+			var eventIds = res.data.map(function(evt) { return evt.id; });
+			spartify.api.findParties(eventIds, function(result) {
+				for (var eventId in result) {
+					$('#fb-parties').append(
+						$('<li>').append(
+							$('<a>').attr('href', '/' + result[eventId])));
+				}
+			}, null);
+		});
+	}
+
+	FB.getLoginStatus(function(res) {
+		if (res.status == 'connected') {
+			checkEvents();
+		} else {
+			FB.Event.subscribe('auth.login', function(res) {
+				checkEvents();
+			});
+		}
+	});
+};
+
+(function(d) {
+	var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+	if (d.getElementById(id)) { return; }
+	js = d.createElement('script'); js.id = id; js.async = true;
+	js.src = '//connect.facebook.net/en_US/all.js';
+	ref.parentNode.insertBefore(js, ref);
+}(document));
+</script>
 </body>
 </html>
