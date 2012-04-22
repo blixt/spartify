@@ -5,6 +5,7 @@ var sp = getSpotifyApi();
 exports.createEvent = createEvent;
 exports.getEvents = getEvents;
 exports.postToEvent = postToEvent;
+exports.updateEvent = updateEvent;
 
 function createEvent(title, description, location, time, cb) {
   graph('POST', 'me/events',
