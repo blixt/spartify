@@ -48,5 +48,6 @@ class Track:
                 'album': self.album,
                 'length': self.length,
                 }
+
     def __hash__(self):
         return hash(self.uri)
