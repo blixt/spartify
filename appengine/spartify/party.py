@@ -29,7 +29,7 @@ class Party(object):
         return [x for x in self._queue.all], self._queue.version
 
     def get_event_id(self):
-        return stores.parties[party_id]['event_id']
+        return stores.parties[self.id]['event_id']
 
     def vote(self, user, track_uri):
         user_vote_key = '%s:%s' % (user, track_uri,)
