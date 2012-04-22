@@ -9,12 +9,13 @@ def validate(f):
 
 
 class API(object):
-    def start(self):
-        party_id, queue, version = party.create()
+    def start(self, event_id=0):
+        party_id, queue, version = party.create(event_id)
         return {
                 'id': party_id,
                 'queue': queue,
                 'version': version,
+                'event_id': event_id,
                 }
 
     @validate
@@ -45,6 +46,9 @@ class API(object):
     def vote(self, party_id, user_id, track_uri):
         party.Party(party_id).vote(user_id, track_uri)
         return None
+
+    def find_parties(self, event_ids):
+        return party.find(event_ids)
 
 
 class SpartifyService(API, util.JsonService):

@@ -37,10 +37,21 @@ class Party(object):
 def exists(party_id):
     return True if party_id in stores.parties else False
 
-def create():
+def create(event_id):
     party_id = create_id(size=5)
-    stores.parties[party_id] = 1
+    stores.parties[party_id] = {'event_id': event_id}
+    # quick and dirty
+    stores.events[event_id] = {'party_id': party_id}
     return party_id, [], '0'
 
 def join(party_id):
     return create_id(), Party(party_id).get_queue()
+
+def find(event_ids):
+    parties = {}
+    for event_id in event_ids:
+        try:
+            parties[event_ids] = stores.events[event_id]['party_id']
+        except KeyError:
+            pass
+    return parties

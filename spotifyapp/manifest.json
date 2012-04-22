@@ -14,6 +14,7 @@
         "en"
     ],
     "RequiredPermissions": [
-        "http://www.spartify.com"
+        "http://www.spartify.com",
+        "http://localhost"
     ]
 }

@@ -91,4 +91,5 @@ class DataStore:
 
 votes = DataStore('vote', False)
 parties = DataStore('party') 
+events = DataStore('events') 
 queues = DataStore('queue') 

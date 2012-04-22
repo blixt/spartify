@@ -19,7 +19,7 @@ function createHandler(method, argNames, callback) {
 		}
 		var success = arguments[i], error = arguments[i + 1];
 
-		$.getJSON('http://www.spartify.com/api/' + method, args, function (data) {
+		$.getJSON('http://localhost/api/' + method, args, function (data) {
 			if (data.status != 'success') {
 				console.error('API call', method, 'failed:', data.response.type, data.response.message);
 				if (error) error(data);
