@@ -56,7 +56,7 @@ def find(event_ids):
     parties = {}
     for event_id in event_ids:
         try:
-            parties[event_ids] = stores.events[event_id]['party_id']
+            parties[event_id] = stores.events[event_id]['party_id']
         except KeyError:
             pass
     return parties
