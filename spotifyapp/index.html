@@ -8,11 +8,14 @@
 <body id="view-start">
 	<h1>Spartify</h1>
 	<section class="view-start">
-		<p>Enter your party details
-		<p><input id="title" placeholder="Party name">
-		<p><textarea id="description" placeholder="Description of the party"></textarea>
-		<p><input id="where" placeholder="Location">
-		<p><input id="when" placeholder="When?">
+		<p><input id="create-fb-event" type="checkbox" checked><label for="create-fb-event">Create Facebook event!</label>
+		<div id="fb-event-details">
+			<p>Enter your party details
+			<p><input id="title" placeholder="Party name">
+			<p><textarea id="description" placeholder="Description of the party"></textarea>
+			<p><input id="where" placeholder="Location">
+			<p><input id="when" placeholder="When?">
+		</div>
 		<button class="create nav" id="create-party">Create the party!</button>
 	</section>
 	<section class="view-party">
