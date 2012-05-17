@@ -98,7 +98,9 @@ var el = {
   searchResults: $('#search-results'),
   title: $('#title'),
   when: $('#when'),
-  where: $('#where')
+  where: $('#where'),
+  fbEventDetails: $('#fb-event-details'),
+  createFbEvent: $('#create-fb-event'),
 };
 
 var currentTrack, playlist, queue, queueVersion;
@@ -211,6 +213,10 @@ function enterParty(code) {
 }
 
 function init() {
+  el.createFbEvent.click(function(event) {
+    el.fbEventDetails.css('visibility', (event.target.checked ? 'visible' : 'hidden'))
+  });
+
   el.createParty.click(function () {
     el.queue.empty();
     el.queue.css('height', 0);
@@ -220,21 +226,32 @@ function init() {
     el.partyCode.text('...');
     el.body.attr('id', 'view-party');
 
-    facebook.createEvent(el.title.val(), el.description.val(), el.where.val(), el.when.val(),
-        function(fbEvent) {
-          api.createParty(fbEvent.id,
-            function (party) {
-              facebook.updateEvent(fbEvent.id, {
-                description: el.description.val() + '\n\n' +
-                    'Add songs you want to hear at the party here:\n' +
-                    'http://www.spartify.com/' + party.id});
-              enterParty(party.id);
-              tracksCallback(party);
-            },
-            function () {
-              // TODO(blixt): Show an error.
-            });
-        });
+    if (el.createFbEvent.is(':checked')) {
+      facebook.createEvent(el.title.val(), el.description.val(), el.where.val(), el.when.val(),
+          function(fbEvent) {
+            api.createParty(fbEvent.id,
+                function (party) {
+                  facebook.updateEvent(fbEvent.id, {
+                      description: el.description.val() + '\n\n' +
+                      'Add songs you want to hear at the party here:\n' +
+                      'http://www.spartify.com/' + party.id});
+                  enterParty(party.id);
+                  tracksCallback(party);
+                },
+                function () {
+                  // TODO(blixt): Show an error.
+                });
+          });
+    } else {
+      api.createParty(0,
+          function (party) {
+            enterParty(party.id);
+            tracksCallback(party);
+          },
+          function () {
+            // TODO(blixt): Show an error.
+          });
+    }
   });
 
   el.leaveParty.click(function () {

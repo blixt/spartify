@@ -104,6 +104,11 @@ input, textarea {
 	width: 100%;
 }
 
+input#create-fb-event {
+	width: 20px;
+	height: 20px;
+}
+
 textarea {
 	font-size: 15px;
 }
