@@ -1,3 +1,3 @@
 # Spartify
-- Andreas Blixt <blixt@spotify.com>
-- Ricardo Santos <ricardo@spotify.com>
+- Andreas Blixt <me@blixt.nyc>
+- Ricardo Santos <ricash@gmail.com>
