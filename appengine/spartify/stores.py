@@ -16,9 +16,9 @@ class AsyncValue:
 
 
 class StoreNode(db.Model):
-    value = db.StringProperty()
+    value = db.TextProperty()
     # These aren't readable just yet
-    collection = db.StringProperty()
+    collection = db.TextProperty()
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)
 
